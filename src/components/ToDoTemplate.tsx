@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
+import ToDoItem from './ToDoItem'
 
 const ToDoBlock = styled.div`
     border: 1px solid red;
@@ -22,7 +23,7 @@ const Input = styled.input`
     padding: 12px;
     border-radius: 4px;
     border: 1px solid #dee2e6;
-    width: 100%;
+    width: 85%;
     outline: none;
     font-size: 18px;
     box-sizing: border-box;
@@ -30,9 +31,14 @@ const Input = styled.input`
 
 
 export default function ToDoTemplate(){
-    const [oepn, setOpen] = useState(false);
-    const [content, setContent] = useState([]);
-    const [value, setValue] = useState('');
+    const [oepn, setOpen] = useState<boolean>(false);
+    const [value, setValue] = useState<string>('');
+    const [toDoList, setToDoList] = useState<string[]>([]);
+
+    const addToDo = ()=> {
+        setToDoList([...toDoList, value]);
+        setValue('');
+    }
 
     // input 창에 값을 입력을 한다. 그리고 엔터키를 친다
     // input 창 아래에 새로운 div 가 추가된다.
@@ -41,20 +47,20 @@ export default function ToDoTemplate(){
 
         <ToDoBlock>
             <h1>todo 리스트</h1>
-            <InsertForm onSubmit={(e)=>{
-                e.preventDefault(); // submit 새로고침이벤트 방지
-              
-                  setValue('');
-                  setOpen(false);
-            }}>
-                <Input autoFocus onChange={(e)=>{setValue(e.target.value)}} value={value} placeholder="할 일을 입력 후, Enter 를 누르세요" />
-
+            <InsertForm>
+                <Input autoFocus onChange={(e)=>{setValue(e.target.value)}} value={value} placeholder="할 일을 입력하세요" />
+                <button onClick={addToDo}>+</button>    
             </InsertForm>
-            {/* <input onKeyDown={ (e)=>{ console.log("e", e.target);  setOpen(!open) } }></input> */}
 
             {
-                
+                toDoList.map((a,i)=>{
+                    return (
+                        ""
+                    )
+                })    
             }
+            
+            <ToDoItem toDoList={toDoList}/>
         </ToDoBlock>
 
     )
