@@ -6,9 +6,9 @@ const Input = styled.input`
   display: none;
 `;
 
-const Span = styled.span`
+const Label = styled.label`
   padding-left: 20px;
-
+  cursor: pointer;
   &:before {
     content: "";
     position: absolute;
@@ -24,14 +24,12 @@ const Span = styled.span`
     background-repeat: no-repeat;
   }
 `;
-const LoginKeepWrap = styled.label`
-  display: inline-block;
+const LoginKeepWrap = styled.div`
   margin-top: 15px;
   text-align: left;
   position: relative;
-  cursor: pointer;
 
-  ${Input}:checked + ${Span}::before {
+  ${Input}:checked + ${Label}::before {
     background-position: -244px -167px;
     background-repeat: no-repeat;
     width: 18px;
@@ -47,11 +45,9 @@ export default function CheckBox() {
   };
 
   return (
-    <div style={{textAlign: "left"}}>
-      <LoginKeepWrap>
-        <Input type="checkbox" checked={isChecked} onChange={()=>{ setIsChecked(!isChecked);}}/>         
-        <Span>로그인상태 유지</Span>
-      </LoginKeepWrap>
-    </div>
+    <LoginKeepWrap>
+      <Input id="check" type="checkbox" checked={isChecked} onChange={()=>{ setIsChecked(!isChecked);}}/>         
+      <Label htmlFor="check">로그인상태 유지</Label>
+    </LoginKeepWrap>
   );
 }
