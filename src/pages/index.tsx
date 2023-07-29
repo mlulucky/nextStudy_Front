@@ -20,10 +20,10 @@ export default function Home() {
   `
   const Form = styled.form`
     border: 1px solid #c6c6c6;
-    width: 400px;
+    width: 450px;
     height: 300px;
     padding: 20px 30px;
-    border-radius: 6px;
+    border-radius: 10px;
 
   `
 

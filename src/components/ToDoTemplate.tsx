@@ -4,18 +4,16 @@ import styled from "styled-components";
 import ToDoItem from "./ToDoItem";
 
 const ToDoBlock = styled.div`
-  border: 1px solid red;
-  width: 500px;
+  border: 1px solid #c6c6c6;
+  width: 450px;
+  border-radius: 10px;
 `;
 
 const InsertForm = styled.form`
-  background: #f8f9fa;
   padding: 30px;
-  height: 600px;
-  
+  height: 400px;
   display: flex;
   flex-direction: column;
-
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
   border-top: 1px solid #e9ecef;
@@ -29,11 +27,19 @@ const Input = styled.input`
   outline: none;
   font-size: 18px;
   box-sizing: border-box;
+  &:focus {
+    border: 1px solid #03c75a;
+  }
+  &::placeholder {
+    color: #ccc;
+  }
 `;
 
 export default function ToDoTemplate() {
   const [value, setValue] = useState<string>("");
   const [toDoList, setToDoList] = useState<string[]>([]);
+  const [done, setDone] = useState<boolean>(false);
+
 
   const addToDo = () => {
     setToDoList([...toDoList, value]);
@@ -63,12 +69,16 @@ export default function ToDoTemplate() {
             style={{ display: "none" }}
             onClick={(e) => {
               e.preventDefault();
-              addToDo();
+              if(value.trim() == "") {
+                alert("할 일을 입력해주세요.");
+              } else {
+                addToDo();
+              }
             }}
           >
           </button>
         </div>
-        <ToDoItem toDoList = { toDoList }/>
+        <ToDoItem done={done} setDone={setDone} toDoList={toDoList} setToDoList={setToDoList}/>
       </InsertForm>
     </ToDoBlock>
 
