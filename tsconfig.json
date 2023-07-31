@@ -18,7 +18,8 @@
       "@/*": ["./*"],
       "@public/*" : ["../public/*"]
     },
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "typeRoots" : ["./@types", "./node_modules/@types"] // TypeScript 미지원 라이브러리에 TypeScript 지원을 받을 수 있게 해주는 써드파티 라이브러리 // Typescript에서 js npm 모듈 import시 오류를 해결하는 방법 -> 원인은 기존 js 파일에서만 import 하여 사용가능한 형태만 지원하고 npm모듈을 만든 개발자가 typescript사용할 수 있도록 처리를 하지 않았기 때문
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
