@@ -64,7 +64,7 @@ const Check = styled.div<{done: boolean}>`
   
 `
 
-
+// 할 일
 export default function ToDoItem({todo}: { todo : {id: number; todo: string; done: boolean;}}) { 
   //     todo : { id: number; todo: string; done: boolean }  // todo 의 프로퍼티를 개별 프로퍼티의 타입들로 구성 
   // 🌈 todo : { todo : { id: number; todo: string; done: boolean } } // 컴포넌트의 프로퍼티 타입을 객체 형태로 적용 // == todo 는 todo 객체

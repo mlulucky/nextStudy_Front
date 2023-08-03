@@ -29,7 +29,7 @@ export default function todos(
     case "TOGGLE_TODO" :
         return state.map((todo) => { return todo.id === action.id ?  { ...todo, done: !todo.done } : todo });
     case "REMOVE_TODO" : 
-        return state.filter((todo) => { return todo.id !== action.id })
+        return state.filter((todo) => { return todo.id !== action.id }) // to do 리스트의 id 가 내가 선택한 id 와 같지 않은 todo 만 반환 (같은 todo 는 제외 - 삭제효과)
     default:
       return state;
   }

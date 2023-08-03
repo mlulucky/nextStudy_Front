@@ -21,7 +21,7 @@ export default function ToDoList() {
    return (
     <Ul>
         {
-            todos.map( (todo, i) => {return (
+            todos.map((todo, i) => {return (
                 <ToDoItem todo={todo} key={i}/>
             )} )
         }
