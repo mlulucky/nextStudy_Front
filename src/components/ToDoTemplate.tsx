@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import styled from "styled-components";
 import ToDoItem from "./ToDoItem";
+import ToDoList from "./ToDoList";
 
 const ToDoBlock = styled.div`
   border: 1px solid #c6c6c6;
@@ -42,7 +43,7 @@ export default function ToDoTemplate() {
 
 
   const addToDo = () => {
-    setToDoList([...toDoList, value]);
+    setToDoList([...toDoList, value]); // 🌈 구현 바뀔 예정
     setValue("");
     console.log(toDoList);
   };
@@ -78,7 +79,8 @@ export default function ToDoTemplate() {
           >
           </button>
         </div>
-        <ToDoItem done={done} setDone={setDone} toDoList={toDoList} setToDoList={setToDoList}/>
+        <ToDoList />
+        {/* <ToDoItem done={done} setDone={setDone} toDoList={toDoList} setToDoList={setToDoList}/> */}
       </InsertForm>
     </ToDoBlock>
 

@@ -27,11 +27,9 @@ const List = styled.li`
 	&:hover {
 		${Remove} { 
 			visibility: visible;
-		}
-	}
+
 
 `;
-
 
 const ToDo = styled.div<{done: boolean}>`
 	flex: 1;
@@ -63,52 +61,53 @@ const Check = styled.div<{done: boolean}>`
 			color: #ced4da;
 		`
 	}
-
+  
 `
 
 
+export default function ToDoItem({todo}: { todo : {id: number; todo: string; done: boolean;}}) { 
+  //     todo : { id: number; todo: string; done: boolean }  // todo 의 프로퍼티를 개별 프로퍼티의 타입들로 구성 
+  // 🌈 todo : { todo : { id: number; todo: string; done: boolean } } // 컴포넌트의 프로퍼티 타입을 객체 형태로 적용 // == todo 는 todo 객체
+  return(
+    <List >
+      <Check></Check>
+      <ToDo>{todo.todo}</ToDo>
+      <Remove></Remove>
+    </List>
 
-// export default function ToDoItem (toDoList : string[]) {
-export default function ToDoItem({ toDoList, done, setToDoList, setDone }: { toDoList: string[], done: boolean, setToDoList: (newList : string[]) => void, setDone: (status : boolean) => void }) {
-	// 체크
-	// 체크박스 이미지 변경, todo 텍스트 색상변경
-	// 할일의 개수( toDoList )에서 개수 -1 개
-	// 체크되면 true  체크표시이미지, 체크안되면 false 체크전 표시
-	const completeToDo = (i: number) => {
-		console.log("투두 완료");
-		setDone(!done);
-
-	}	
-	// 삭제
-	// 삭제 버튼 누르면 아이템 삭제
-	// 할일의 개수( toDoList )에서 개수 -1 개
-	const deleteToDo = (i: number) => {
-		let newToDoList = [...toDoList];
-		newToDoList.splice(i,1);
-		setToDoList(newToDoList);
-	}
-
-  return (
-    <Ul>
-			
-			{toDoList.map((a, i) => {
-				return (
-					<List key={i}>
-							<Check done={done} onClick={(e)=>{
-								console.log(e.currentTarget);
-								completeToDo(i);
-							}} > <MdDone/ ></Check>
-							<ToDo done={done}> {a} </ToDo>
-							<Remove onClick={
-								()=>{
-									deleteToDo(i);
-								}
-							}> <MdRemoveCircleOutline /> </Remove>
-					</List>
-				);
-			})}
-
-    </Ul>
-  );
-
+  )
 }
+
+
+ 
+
+// export default function ToDoItem({ toDoList, done, setToDoList, setDone }: { toDoList: string[], done: boolean, setToDoList: (newList : string[]) => void, setDone: (status : boolean) => void }) {
+// 	const completeToDo = (i: number) => {
+// 		console.log("투두 완료");
+// 		setDone(!done);
+
+// 	}	
+// 	const deleteToDo = (i: number) => {
+// 		let newToDoList = [...toDoList];
+// 		newToDoList.splice(i,1);
+// 		setToDoList(newToDoList);
+// 	}
+
+//   return (
+//     <Ul>
+			
+// 			{toDoList.map((a, i) => {
+// 				return (
+// 					<List key={i}>
+// 							<Check done={done} onClick={(e)=>{ completeToDo(i);}} > <MdDone/ ></Check>
+// 							<ToDo done={done}> {a} </ToDo>
+// 							<Remove onClick={
+// 								()=>{deleteToDo(i);}
+// 							}> <MdRemoveCircleOutline /> </Remove>
+// 					</List>
+// 				);
+// 			})}
+//     </Ul>
+//   );
+
+// }
