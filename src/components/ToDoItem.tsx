@@ -1,13 +1,14 @@
 import React from "react";
 import {styled, css} from "styled-components";
 import { MdDone, MdRemoveCircleOutline } from 'react-icons/md';
+import { useToDo } from "@/modules/todos"; 
 
-const Ul = styled.ul`
-  padding-left: 0 !important;
-  border: 2px solid green;
-	flex: 3;
-  overflow-y: auto;
-`;
+// const Ul = styled.ul`
+//   padding-left: 0 !important;
+//   border: 2px solid green;
+// 	flex: 3;
+//   overflow-y: auto;
+// `;
 
 const Remove = styled.div`
   color: #dee2e6;
@@ -21,9 +22,9 @@ const Remove = styled.div`
 `; 
 
 const List = styled.li`
-	display: flex;
-	align-items: center;
 	padding: 10px 0;
+  display: flex;
+  align-items: center;
 	&:hover {
 		${Remove} { 
 			visibility: visible;
@@ -31,13 +32,43 @@ const List = styled.li`
 
 `;
 
-const ToDo = styled.div<{done: boolean}>`
+// const ToDo = styled.div<{done: boolean}>`
+// 	flex: 1;
+// 	text-align: left;
+// 	${props => props.done && css` color: #aaa; text-decoration: line-through; `}
+// `
+
+// const Check = styled.div<{done: boolean}>`
+// 	width: 20px;
+// 	height: 20px;
+// 	border-radius: 50%;
+// 	border: 1px solid #ced4da;
+//   font-size: 24px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   margin-right: 20px;
+//   cursor: pointer;
+
+// 	${props =>
+//     props.done ?
+//     css`
+//       border: 1px solid #03c75a;
+//       color: #fff;
+// 			background-color: #03c75a;
+//     `
+// 		: 
+// 		css`
+// 			color: #ced4da;
+// 		`
+// 	}
+// `
+
+const ToDo = styled.div`
 	flex: 1;
 	text-align: left;
-	${props => props.done && css` color: #aaa; text-decoration: line-through; `}
 `
-
-const Check = styled.div<{done: boolean}>`
+const Check = styled.div`
 	width: 20px;
 	height: 20px;
 	border-radius: 50%;
@@ -48,31 +79,23 @@ const Check = styled.div<{done: boolean}>`
   justify-content: center;
   margin-right: 20px;
   cursor: pointer;
-
-	${props =>
-    props.done ?
-    css`
-      border: 1px solid #03c75a;
-      color: #fff;
-			background-color: #03c75a;
-    `
-		: 
-		css`
-			color: #ced4da;
-		`
-	}
-  
 `
+
+
 
 // 할 일
 export default function ToDoItem({todo}: { todo : {id: number; todo: string; done: boolean;}}) { 
   //     todo : { id: number; todo: string; done: boolean }  // todo 의 프로퍼티를 개별 프로퍼티의 타입들로 구성 
   // 🌈 todo : { todo : { id: number; todo: string; done: boolean } } // 컴포넌트의 프로퍼티 타입을 객체 형태로 적용 // == todo 는 todo 객체
+  
+  const { toggleToDo, removeToDo } = useToDo();
+  
+  
   return(
     <List >
-      <Check></Check>
-      <ToDo>{todo.todo}</ToDo>
-      <Remove></Remove>
+      <Check>  <MdDone/> </Check>
+      <ToDo onClick={ ()=> { toggleToDo(todo.id) } }>{todo.todo}</ToDo>
+      <Remove onClick={ () => { removeToDo(todo.id)  } } > <MdRemoveCircleOutline /> </Remove>
     </List>
 
   )

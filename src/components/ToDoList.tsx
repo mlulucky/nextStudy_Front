@@ -1,32 +1,34 @@
 import React from "react";
 import {styled, css} from "styled-components";
 import ToDoItem from './ToDoItem';
-import useToDo from "@/hooks/useToDo";
-// import useToDo from "@/modules/todos";
+import { useToDo } from "@/modules/todos";
 
 const Ul = styled.ul`
-  padding-left: 0 !important;
   border: 2px solid green;
-	flex: 3;
-  overflow-y: auto;
+	// flex: 3;
+  // overflow-y: auto;
+  list-style: none;
+  padding-left: 0 !important;
+
 `;
 
 export default function ToDoList() {
-   // const todos : { id: number; todo: string; done: boolean; }[] = []; // 🌈
-    const todos = useToDo();
+  const { state } = useToDo();
 
+  if (state.length === 0) return <p>등록된 항목이 없습니다.</p>;
 
-   if(todos.length === 0) return <p>등록된 항목이 없습니다.</p>
-
-   return (
+  console.log("todolist state", state);
+  return (
     <Ul>
-        {
-            todos.map((todo, i) => {return (
-                <ToDoItem todo={todo} key={i}/>
-            )} )
-        }
+      {
+      state.map((todo, i) => {
+        return <ToDoItem todo={todo} key={i} />;
+      })
+      }
+
+      <pre>{JSON.stringify(state, null, 2)}</pre>
     </Ul>
-   )
+  );
 }
 
 
