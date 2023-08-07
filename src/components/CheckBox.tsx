@@ -24,11 +24,11 @@ const Label = styled.label`
     background-repeat: no-repeat;
   }
 `;
+
 const LoginKeepWrap = styled.div`
   margin-top: 15px;
   text-align: left;
   position: relative;
-
   ${Input}:checked + ${Label}::before {
     background-position: -244px -167px;
     background-repeat: no-repeat;
@@ -39,10 +39,6 @@ const LoginKeepWrap = styled.div`
 
 export default function CheckBox() {
   let [isChecked, setIsChecked] = useState(false);
-
-  const check = () => {
-    setIsChecked(!isChecked);
-  };
 
   return (
     <LoginKeepWrap>

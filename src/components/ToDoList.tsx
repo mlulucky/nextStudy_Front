@@ -4,10 +4,11 @@ import ToDoItem from './ToDoItem';
 import { ToDoItemType } from "@/hooks/useToDo";
 
 const Ul = styled.ul`
-  border: 2px solid green;
+  // border: 2px solid green;
   overflow-y: auto;
   list-style: none;
   padding-left: 0 !important;
+  padding: 0 1rem; 
   flex: 4;
 `;
 

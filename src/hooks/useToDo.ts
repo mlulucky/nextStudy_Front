@@ -11,7 +11,7 @@ export type ToDos = {
 }
 
 export function useToDo() {
-  const initialState : ToDoItemType = {
+    const initialState : ToDoItemType = {
     todos: []
   }
 
@@ -42,11 +42,9 @@ export function useToDo() {
         }
       default:
         return state;
-    }
-    
+    }   
   }
 
-  
   const [state, dispatch] = useReducer(reducer, initialState); // dispatch( action ) : reducer 함수를 호출하는 함수, state 변경을 요청 
 
   function addToDo(text: string) {

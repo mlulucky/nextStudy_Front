@@ -17,19 +17,19 @@ export default function Home() {
     align-items: center;
     height: 100vh;
     text-align: center;
-  `
+  `;
+
   const Form = styled.form`
     border: 1px solid #c6c6c6;
     width: 450px;
     height: 300px;
     padding: 20px 30px;
     border-radius: 10px;
-
-  `
+  `;
 
   const Title = styled.h3`
+  `;
 
-  `
   const Button = styled.button`
     width: 100%;
     border-radius: 6px;
@@ -43,7 +43,7 @@ export default function Home() {
     color: #fff;
     cursor: pointer;
     margin-top: 40px;
-  `
+  `;
 
   // styled-components 에 props 속성 주기
   const Input = styled.input<{isFirst?:boolean}>`
@@ -54,15 +54,12 @@ export default function Home() {
     margin-top: ${({isFirst}) => isFirst ? '0' : '-1px'};
     border-radius: ${({isFirst}) => isFirst ? '6px 6px 0 0' : '0 0 6px 6px'};
     position: relative;
-
     &:focus {
       border: 1px solid #03c75a;
       outline: none;
       z-index: 5;
     }
-  `
-
-
+  `;
 
   return (
     <Div>

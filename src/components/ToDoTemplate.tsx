@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import styled from "styled-components";
-import ToDoInsert from "./ToDoInsert"
+import ToDoInsert from "./ToDoInsert";
 import ToDoList from "./ToDoList";
 import { useToDo } from "@/hooks/useToDo";
 import ToDoHead from "./ToDoHead";
