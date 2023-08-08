@@ -12,13 +12,14 @@ const Ul = styled.ul`
   flex: 4;
 `;
 
-export type toggleRmoveType = {
+export type ToDoListProps = {
   toggleToDo : (id:number)=> void;
-  removeToDo: (id:number)=>void
+  removeToDo: (id:number)=>void;
+  updateToDo : (text:string, id:number)=>void;
 }
 
 export default React.memo(
-  function ToDoList({ state, toggleToDo, removeToDo } : {state: ToDoItemType, toggleToDo: toggleRmoveType['toggleToDo'], removeToDo: toggleRmoveType['removeToDo'] } ) {
+  function ToDoList({ state, toggleToDo, removeToDo, updateToDo } : {state: ToDoItemType, toggleToDo: ToDoListProps['toggleToDo'], removeToDo: ToDoListProps['removeToDo'], updateToDo: ToDoListProps['updateToDo'] } ) {
 
     if (state.todos.length === 0) return <p style={{flex: "4"}}>등록된 항목이 없습니다.</p>;
   
@@ -27,7 +28,7 @@ export default React.memo(
       <Ul>
         {
         state.todos.map((todo, i) => {
-          return <ToDoItem todo={todo} key={i} toggleToDo={toggleToDo} removeToDo={removeToDo}/>;
+          return <ToDoItem todo={todo} key={i} toggleToDo={toggleToDo} removeToDo={removeToDo} updateToDo={updateToDo}/>;
         })
         }
       </Ul>

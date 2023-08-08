@@ -21,6 +21,7 @@ export function useToDo() {
       | { type: "ADD_TODO"; payload : { text: string } }
       | { type: "TOGGLE_TODO"; payload: { id: number } }
       | { type: "REMOVE_TODO"; payload: { id: number } }
+      | { type: "UPDATE_TODO"; payload: { text: string, id: number }}
   ): ToDoItemType {
 
     switch (action.type) {
@@ -39,6 +40,12 @@ export function useToDo() {
       case "REMOVE_TODO" : 
         return {
          todos: state.todos.filter(todo => todo.id !== action.payload.id)  // to do 리스트의 id 가 내가 선택한 id 와 같지 않은 todo 만 반환 (같은 todo 는 제외 - 삭제효과)
+        }
+      case "UPDATE_TODO" :
+        return {
+          todos: state.todos.map(todo => {
+            return  todo.id === action.payload.id ? { ...todo, todo: action.payload.text } : todo
+          })
         }
       default:
         return state;
@@ -59,7 +66,11 @@ export function useToDo() {
     dispatch({ type: "REMOVE_TODO", payload: { id } });
   }
 
-  return { state, addToDo, toggleToDo, removeToDo };
+  function updateToDo(text: string, id: number) {
+    dispatch({ type: "UPDATE_TODO", payload : { text, id }});
+  }
+
+  return { state, addToDo, toggleToDo, removeToDo, updateToDo };
 
 }
 
