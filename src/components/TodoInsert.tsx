@@ -20,8 +20,10 @@ const Input = styled.input`
 // React.Dispatch<React.SetStateAction<state의 타입>>; - setValue 는 Dispatch 타입
 
 // 할 일 등록 컴포넌트
-export default function ToDoInsert({value, setValue, addToDo} : {value: string, setValue: Dispatch<SetStateAction<string>>, addToDo: (text: string) => void }) {
-		const onSubmit = (e: FormEvent) => {
+export default function ToDoInsert({addToDo} : {addToDo: (text: string) => void }) {
+    const [value, setValue] = useState('');
+    
+    const onSubmit = (e: FormEvent) => {
 			e.preventDefault();
 			if(value.trim() == "") { alert("할 일을 입력해주세요.") }  
       else {

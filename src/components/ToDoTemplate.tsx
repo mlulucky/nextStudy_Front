@@ -17,14 +17,13 @@ const ToDoWrap = styled.div`
 `;
 
 export default function ToDoTemplate() {
-  const [value, setValue] = useState('');
-  const {state, addToDo, toggleToDo, removeToDo} = useToDo();
+  const {state, addToDo, toggleToDo, removeToDo, updateToDo} = useToDo();
 
   return (
     <ToDoWrap>
       <ToDoHead state={state}/>      
-      <ToDoInsert value={value} setValue={setValue} addToDo={addToDo}/>
-      <ToDoList state={state} toggleToDo={toggleToDo} removeToDo={removeToDo}/>
+      <ToDoInsert addToDo={addToDo}/>
+      <ToDoList state={state} toggleToDo={toggleToDo} removeToDo={removeToDo} updateToDo={updateToDo}/>
     </ToDoWrap>
 
   );
