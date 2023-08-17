@@ -6,12 +6,72 @@ import styled from 'styled-components'
 import CheckBox from '@/components/CheckBox'
 import checkImg from '@public/check.png'
 import iconImg from '@public/icon.png'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
-const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  const Div = styled.div`
+  const [connection, setConnection] = useState<string>('');
+  const connectionTest = () => {
+    axios.get('http://localhost:8080/api/user/hello')
+    .then((response) => {
+      console.log(response);
+    })
+  }
+
+  useEffect(()=> {
+    connectionTest();
+  },[])
+
+
+  const [account, setAccount] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  
+  const loginHandler = (e:any) => {
+    e.preventDefault(); // 페이지 새로고침 방지
+
+    if(account.length === 0 || password.length === 0){
+      alert("이메일과 비밀번호를 입력하세요.");
+      // return;
+    }
+    
+    const data = {
+      account,
+      password
+    }
+
+    axios.post('http://localhost:8080/api/user/login', data)  // { "key" : value } 서버로 전달할 데이터
+    .then((response)=>{
+      console.log(response);
+    })
+    .catch((error)=> {
+      alert("로그인에 실패했습니다.")
+      console.log(error);
+    });
+  }
+
+
+
+  return (
+    <Div>
+      <Form>
+        <Title>Login</Title>
+        <div style={{boxShadow: '0 2px 6px 0 rgba(68,68,68,.08)'}}>
+          <Input isFirst placeholder='아이디' onChange={(e)=> {setAccount(e.target.value)}}/>
+          <Input placeholder='비밀번호' onChange={(e)=> {setPassword(e.target.value)}}/>
+        </div>
+        <CheckBox/>
+        <Button onClick={(e)=>{
+          loginHandler(e);
+        }}>로그인</Button>
+      </Form>
+    </Div>
+  )
+}
+
+// 스타일컴포넌트 정의 - 컴포넌트 외부로 이동 : 해당 컴포넌트가 렌더링될 때마다 스타일 컴포넌트가 다시 생성되지 않도록 합니다.
+const Div = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -60,18 +120,4 @@ export default function Home() {
       z-index: 5;
     }
   `;
-
-  return (
-    <Div>
-      <Form>
-        <Title>Login</Title>
-        <div style={{boxShadow: '0 2px 6px 0 rgba(68,68,68,.08)'}}>
-          <Input isFirst placeholder='아이디'/>
-          <Input placeholder='비밀번호'/>
-        </div>
-        <CheckBox/>
-        <Button>로그인</Button>
-      </Form>
-    </Div>
-  )
-}
+  
