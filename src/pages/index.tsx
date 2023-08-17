@@ -16,12 +16,14 @@ export default function Home() {
     axios.get('http://localhost:8080/api/user/hello')
     .then((response) => {
       console.log(response);
+    }).catch((error)=>{
+      console.log(error);
     })
   }
 
-  useEffect(()=> {
+  useEffect(()=> { // 특정 상태가 변경시 실행
     connectionTest();
-  },[])
+  },[]) // [] : 최초 렌더 시 1 번만 실행
 
 
   const [account, setAccount] = useState<string>("");
