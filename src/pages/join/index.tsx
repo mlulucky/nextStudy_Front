@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-
+import Form from '@/components/Form'
+import Button from '@/components/Button';
+import { PageWrapper } from '@/styles/PageWrapper';
 
 export default function Join(){
     const [requestResult, setRequestResult] = useState<string>('');
@@ -12,7 +13,8 @@ export default function Join(){
     const [password, setPassword] = useState<string>('');
     const [passwordCheck, setPasswordCheck] = useState<string>('');
 
-    const joinHandler = () => {
+    const joinHandler = (e : React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
         const data = {
             account,
             userName,
@@ -29,17 +31,27 @@ export default function Join(){
             setRequestResult('에러');
             console.log(error);
         })
+
+        if(!account) {
+            alert("계정을 입력해주세요");
+        }
+
     }
 
     return (
-        <Box>
-             <TextField fullWidth id="standard-basic" label="계정" variant="standard" onChange={(e)=> setAccount(e.target.value)}/>
-             <TextField fullWidth id="standard-basic" label="이름" variant="standard" onChange={(e) => setUserName(e.target.value)}/>
-             <TextField fullWidth id="standard-basic" label="이메일" variant="standard" onChange={(e)=> setEmail(e.target.value)}/>
-             <TextField fullWidth id="standard-basic" label="비밀번호" type="password" variant="standard" onChange={(e)=> setPassword(e.target.value)}/>
-             <TextField fullWidth id="standard-basic" label="비밀번호확인" type="password" variant="standard" onChange={(e)=> setPasswordCheck(e.target.value)}/>
-            {requestResult}
-            <button onClick={()=>{ joinHandler(); }}>회원가입</button>
-        </Box>
+			<PageWrapper>
+				<Box >
+						{requestResult}
+				</Box>
+				<Form>
+					<h3>회원가입</h3>
+					<Form.Input placeholder="계정" onChange={(e)=>{setAccount(e)}}/>
+					<Form.Input placeholder="이름" onChange={(e)=>{setUserName(e)}}/>
+					<Form.Input placeholder="이메일" onChange={(e)=>{setEmail(e)}}/>
+					<Form.Input placeholder="비밀번호" onChange={(e)=>{setPassword(e)}}/>
+					<Form.Input placeholder="비밀번호확인" onChange={(e)=>{setPasswordCheck(e)}}/>
+					<Button onClick={(e)=>{ joinHandler(e); }}>가입하기</Button>
+				</Form>
+			</PageWrapper>
     )
 }

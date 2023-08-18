@@ -8,7 +8,9 @@ import checkImg from '@public/check.png'
 import iconImg from '@public/icon.png'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-
+import { PageWrapper } from '@/styles/PageWrapper'
+import Button from '@/components/Button'
+import Form from '@/components/Form'
 
 export default function Home() {
   const [connection, setConnection] = useState<string>('');
@@ -30,7 +32,7 @@ export default function Home() {
   const [password, setPassword] = useState<string>("");
 
   
-  const loginHandler = (e:any) => {
+  const loginHandler = (e : React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // 페이지 새로고침 방지
 
     if(account.length === 0 || password.length === 0){
@@ -54,72 +56,18 @@ export default function Home() {
   }
 
 
-
   return (
-    <Div>
+    <PageWrapper>
       <Form>
-        <Title>Login</Title>
+        <h3>Login</h3>
         <div style={{boxShadow: '0 2px 6px 0 rgba(68,68,68,.08)'}}>
-          <Input isFirst placeholder='아이디' onChange={(e)=> {setAccount(e.target.value)}}/>
-          <Input placeholder='비밀번호' onChange={(e)=> {setPassword(e.target.value)}}/>
+          <Form.Input isfirst placeholder='아이디'  onChange={(e)=>{setAccount(e)}}/>
+          <Form.Input placeholder='비밀번호'  onChange={(e)=>{setPassword(e)}}/>
         </div>
         <CheckBox/>
-        <Button onClick={(e)=>{
-          loginHandler(e);
-        }}>로그인</Button>
+        <Button onClick={(e)=>{ loginHandler(e); }}>로그인</Button>
       </Form>
-    </Div>
+    </PageWrapper>
   )
 }
 
-// 스타일컴포넌트 정의 - 컴포넌트 외부로 이동 : 해당 컴포넌트가 렌더링될 때마다 스타일 컴포넌트가 다시 생성되지 않도록 합니다.
-const Div = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    text-align: center;
-  `;
-
-  const Form = styled.form`
-    border: 1px solid #c6c6c6;
-    width: 450px;
-    height: 300px;
-    padding: 20px 30px;
-    border-radius: 10px;
-  `;
-
-  const Title = styled.h3`
-  `;
-
-  const Button = styled.button`
-    width: 100%;
-    border-radius: 6px;
-    border: solid 1px rgba(0,0,0,.15);
-    background-color: #03c75a;
-    box-sizing: border-box;
-    padding: 13px 0 13px;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 24px;
-    color: #fff;
-    cursor: pointer;
-    margin-top: 40px;
-  `;
-
-  // styled-components 에 props 속성 주기
-  const Input = styled.input<{isFirst?:boolean}>`
-    width: 100%;
-    box-sizing: border-box;
-    padding: 14px 17px 13px;
-    border: 1px solid #dadada;
-    margin-top: ${({isFirst}) => isFirst ? '0' : '-1px'};
-    border-radius: ${({isFirst}) => isFirst ? '6px 6px 0 0' : '0 0 6px 6px'};
-    position: relative;
-    &:focus {
-      border: 1px solid #03c75a;
-      outline: none;
-      z-index: 5;
-    }
-  `;
-  
