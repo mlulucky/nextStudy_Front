@@ -25,12 +25,10 @@ export default function Home() {
     connectionTest();
   },[]) // [] : 최초 렌더 시 1 번만 실행
 
-
   const [account, setAccount] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  
-  const loginHandler = (e:any) => {
+  const loginHandler = (e: React.MouseEvent<HTMLButtonElement>) => { // e : 여기서는 onClick 클릭이벤트 타입
     e.preventDefault(); // 페이지 새로고침 방지
 
     if(account.length === 0 || password.length === 0){
@@ -54,14 +52,13 @@ export default function Home() {
   }
 
 
-
   return (
     <Div>
       <Form>
         <Title>Login</Title>
         <div style={{boxShadow: '0 2px 6px 0 rgba(68,68,68,.08)'}}>
           <Input isFirst placeholder='아이디' onChange={(e)=> {setAccount(e.target.value)}}/>
-          <Input placeholder='비밀번호' onChange={(e)=> {setPassword(e.target.value)}}/>
+          <Input placeholder='비밀번호' type="password" onChange={(e)=> {setPassword(e.target.value)}}/>
         </div>
         <CheckBox/>
         <Button onClick={(e)=>{
