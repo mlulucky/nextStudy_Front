@@ -44,6 +44,7 @@ width: 450px;
 // height: 300px;
 padding: 20px 30px;
 border-radius: 10px;
+margin-bottom : 1rem;
 `;
 
 const StyledInput = styled.input<{isfirst?:boolean}>`
