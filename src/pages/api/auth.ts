@@ -13,12 +13,12 @@ const authRequest = async (url:string, data: any) => {
 
 
 export const loginAPI = (data: any) => {
-    const url = 'http://localhost:8080/api/user/login';
+    const url = '/api/user/login';
     return authRequest(url, data);
 }
 
 
 export const joinAPI = async (data: any) => {
-    const url = 'http://localhost:8080/api/user/join';
+    const url = '/api/user/join';
     return authRequest(url, data);
 }
