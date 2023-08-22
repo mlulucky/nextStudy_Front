@@ -28,6 +28,5 @@
     "styled-components": "^6.0.5",
     "typescript": "5.1.6",
     "zustand": "^4.4.1"
-  },
-  "proxy": "http:localhost:8080"
+  }
 }
