@@ -8,8 +8,6 @@ import { MdPerson, MdLogout } from 'react-icons/md'
 import { NavWrapper } from '@/styles/PageWrapper'
 
 export default function Home() {
-  const [toDoResponse, setToDoResponse] = useState<string>('');
-
   const [cookies, setCookies] = useCookies();
   const { user, removeUser } = userStore();
   const [loginUser, setLoginUser] = useState(true);
@@ -19,34 +17,9 @@ export default function Home() {
     removeUser(); // 유저 null 
   }
 
-
-  const loginUserProfile = () => {
-
-  }
-
-  const getToDo = async (token : string) => {
-    const requestToken = {
-      headers: {
-        Authorization : `Bearer ${token}`
-      }
-    };
-
-    console.log("token", token);
-    await axios.get('http://localhost:8080/api/todo/', requestToken)
-    .then((response)=> {
-      setToDoResponse(response.data)
-    }).catch((error)=> '');
-  
-  }
-  
-  useEffect(()=>{
-    const token = cookies.token; 
-    if(token) getToDo(token);
-    else setToDoResponse(''); // token 이 존재 안한다면
-  }, [cookies.token]); // token 가 변경 될때마다 재렌더링
-
   return (
     <>
+      
       {
         user &&
         (
