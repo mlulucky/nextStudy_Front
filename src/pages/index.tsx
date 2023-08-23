@@ -1,25 +1,19 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-import { useCookies } from 'react-cookie'
 import userStore from '@/store/userStore'
 import { Login } from './login'
 import ToDoListPage from './todolist'
-import { MdPerson, MdLogout } from 'react-icons/md'
 import { NavWrapper } from '@/styles/PageWrapper'
+import useAuth from '@/hooks/useAuth'
 
 export default function Home() {
-  const [cookies, setCookies] = useCookies();
-  const { user, removeUser } = userStore();
-  const [loginUser, setLoginUser] = useState(true);
+  const { user } = userStore();
+  const { userLogout } = useAuth();
 
   const logOutHandler = () => {
-    setCookies('token', '', {expires: new Date()}); // 쿠키삭제 // 토큰 '' 빈값으로 처리 , 만료시간은 현재시간으로 설정
-    removeUser(); // 유저 null 
+    userLogout(); // 로그아웃 hook(loginAPI + 로그인로직)   
   }
 
   return (
     <>
-      
       {
         user &&
         (

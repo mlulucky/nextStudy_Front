@@ -1,3 +1,5 @@
+import UserJoinRequestDTO from '@/dto/UserJoinRequestDTO';
+import UserLoginRequestDTO from '@/dto/UserLoginRequestDTO';
 import axios from 'axios'
 
 // 공통함수로 axios 요청 보내기
@@ -12,13 +14,13 @@ const authRequest = async (url:string, data: any) => {
 }
 
 
-export const loginAPI = (data: any) => {
+export const loginAPI = (data: UserLoginRequestDTO) => {
     const url = '/api/user/login';
     return authRequest(url, data);
 }
 
 
-export const joinAPI = async (data: any) => {
+export const joinAPI = async (data: UserJoinRequestDTO) => {
     const url = '/api/user/join';
     return authRequest(url, data);
 }

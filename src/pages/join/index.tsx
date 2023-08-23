@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import Form from '@/components/Form'
 import Button from '@/components/Button';
 import { PageWrapper } from '@/styles/PageWrapper';
-import { joinAPI } from '../api/auth';
+import useAuth from '@/hooks/useAuth';
+
 
 export default function Join(){
     const [account, setAccount] = useState<string>('');
@@ -10,29 +11,18 @@ export default function Join(){
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordCheck, setPasswordCheck] = useState<string>('');
+    const { userJoin } = useAuth();
 
     const joinHandler = async (e : React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         const data = {
-            account,
+            account, // account : account // setAccount() 사용하여 입력한 값을 account 로 저장 -> api 로 서버에 data 전달예정
             userName,
             email,
             password,
             passwordCheck
         };
-
-        const joinResponse = await joinAPI(data);
-        if(!joinResponse) {
-            alert('회원가입에 실패했습니다.');
-            return;
-        }
-        if(!joinResponse.result) {
-            alert('회원가입에 실패했습니다.');
-            return;
-        }
-
-        alert("회원가입에 성공했습니다.");
-    
+        userJoin(data); // 회원가입 hook(joinAPI + 회원가입로직)
     }
 
     return (
