@@ -23,48 +23,35 @@ const ToDoWrap = styled.div`
 
 export default function ToDoTemplate() {
   const {state, addToDo, toggleToDo, removeToDo, updateToDo} = useToDo();
-  
 
   const {user, setUser} = userStore();
-  const [userId, setUserId] = useState<number>();
-  const [content, setContent] = useState<string>();
-  const [done, setDone] = useState<boolean>();
   const [cookies, setCookies] = useCookies();
 
-  // id
-  // userId
-  // content
-  // done
-
-  const [todoList, setTodoList] = useState([]); // 👀 todoList 타입 제네릭 설정하기
-
-  const todoCreateHandler = async () => {
-    const data = {
-      // account : 
-      userId,
-      content,
-      done
-    }
-    
-    const toDoResponse = await addToDoAPI(data);
-
-
+  type ToDos = {
+    id: number;
+    content: string;
+    done: boolean;
   }
 
-  const getToDoList = async (token: string) => {
-    const requestToken = {
-      headers: {
-        Authorization: `Bearer ${token}` // 쿠키에서 토큰을 가져와서 헤더에 포함
-      }
-    }
+  const [todoList, setTodoList] = useState<ToDos[]>([]); // 제네릭에 ToDos[] 타입을 지정 -> [] 빈배열도 ToDos[] 로 정의됨 // 👀 todoList 타입 제네릭 설정하기
 
-    await axios.get(`/api/todo/${user.id}/list`, requestToken)
-    .then((response) => {
-      console.log(response.data);
-    }).catch((error) => {
-      console.log("getToDo Error", error);
-    })
-  }
+  // const getToDoList = async (token: string) => {
+  //   const requestToken = {
+  //     headers: {
+  //       Authorization: `Bearer ${token}` // 쿠키에서 토큰을 가져와서 헤더에 포함
+  //     }
+  //   }
+
+  //   await axios.get(`/api/todo/${user.id}/list`, requestToken)
+  //   .then((response) => {
+  //     setTodoList(response.data);
+  //   }).catch((error) => {
+  //     console.log("getToDo Error", error);
+  //   })
+
+  //   console.log("todoList",todoList);
+
+  // }
 
   useEffect(()=>{
     const token = cookies.token;
@@ -73,11 +60,20 @@ export default function ToDoTemplate() {
 
 
   return (
-    <ToDoWrap>
-      <ToDoHead state={state}/>      
-      <ToDoInsert addToDo={addToDo}/>
-      <ToDoList state={state} toggleToDo={toggleToDo} removeToDo={removeToDo} updateToDo={updateToDo}/>
-    </ToDoWrap>
+    <>
+      { todoList.map((todo, i)=>{
+        return (
+          <>
+            {todo.content}
+          </>
+        )
+      }) }
+      <ToDoWrap>
+        <ToDoHead state={state}/>      
+        <ToDoInsert addToDo={addToDo}/>
+        <ToDoList state={state} toggleToDo={toggleToDo} removeToDo={removeToDo} updateToDo={updateToDo}/>
+      </ToDoWrap>
+    </>
   );
 
 }
