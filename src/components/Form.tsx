@@ -28,7 +28,7 @@ function Input({placeholder, onChange} : InputProps){
 
     return (
         <div>
-            <StyledInput placeholder={placeholder} onChange={ InputChangeHanlder }></StyledInput> 
+            <StyledInput placeholder={placeholder} onChange={(e)=>{InputChangeHanlder(e)}}></StyledInput> 
         </div>
     )
 }
