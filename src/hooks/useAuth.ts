@@ -28,6 +28,11 @@ export default function useAuth(): UseAuthType {
 
     // 로그인
     const userLogin = async (data: UserLoginRequestDTO) => {
+        if(data.account.length === 0 || data.password.length === 0) { // 🌈 아이디, 비밀번호 검증 분리하기!
+            alert("이메일과 비밀번호를 입력하세요.");
+            return; // loginHandler 함수 종료
+        }
+
         try {
             const loginResponse = await loginAPI(data); // // data : 서버로 전달할 데이터 // { "key" : value }      
             if(!loginResponse || !loginResponse.result) {
