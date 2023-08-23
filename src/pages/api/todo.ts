@@ -2,49 +2,80 @@ import axios from "axios";
 
 // todoAPI -> 인증토큰, url, 데이터 넘기기
 // axios(http 메서드) -> listAPI(get) / addAPI(post) / updateAPI(patch) / deleteAPI(delete) 
-
 type requestTokenType = {
     headers: {
         Authorization: string
     }
 }
 
-export class toDoAPI { // 객체
-
-    reqesToken(token: string) : requestTokenType { // 클래스 내부 메서드는 function 을 붙이지 않는다.
-        return {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+const requestToken = (token: string) : requestTokenType => { // 클래스 내부 메서드는 function 을 붙이지 않는다.
+    return {
+        headers: {
+            Authorization: `Bearer ${token}`
         }
-    };
-
-    async getToDoAPI(user: any, token: string) {
-        const reqesToken = this.reqesToken(token);
-        await axios.get(`/api/todo/${user.id}/list`, reqesToken).catch((error) => {console.log(error); null});
     }
+};
 
+// enum Method  {
+//     GET = 'get',
+//     POST = 'post',
+//     PATCH = 'patch',
+//     DELETE = 'delete'
+// }
 
-    async addToDoAPI() {
-        const reqesToken = this.reqesToken(token);
-        await axios.post(url, reqesToken).catch((error) => {console.log(error); null});
-    }
+type Method = 'get' | 'post' | 'patch' | 'delete';
 
+// 👀 todo apit 에서 받아오는 인자에 타입으로 token 추가해서, extends 해서 타입만들기 ?
 
-    async updateToDoAPI() {
+const getToDoAPI = async (method: Method, user: any, token: string) => {
+    const url = `/api/todo/${user.id}/list`;
 
-    }
-
-
-    async deleteToDoAPI() {
-
-    }
-
-
-
-
-
+    const authToKen = requestToken(token);
+    const response = await axios({method: method, url: url, tokens: authToKen})
+    // .catch((error) => {console.log(error); null});
+    if(!response) return null;
+    const result = response.data;
+    return result;
 }
+
+
+
+// export class toDoAPI { // 객체
+
+//     // reqesToken(token: string) : requestTokenType { // 클래스 내부 메서드는 function 을 붙이지 않는다.
+//     //     return {
+//     //         headers: {
+//     //             Authorization: `Bearer ${token}`
+//     //         }
+//     //     }
+//     // };
+
+//     async getToDoAPI(user: any, token: string) {
+//         const requestToken = this.requestToken(token);
+//         await axios.get(`/api/todo/${user.id}/list`, requestToken).catch((error) => {console.log(error); null});
+//     }
+
+
+//     async addToDoAPI() {
+//         const requestToken = this.requestToken(token);
+//         await axios.post(url, requestToken).catch((error) => {console.log(error); null});
+//     }
+
+
+//     async updateToDoAPI() {
+
+//     }
+
+
+//     async deleteToDoAPI() {
+
+//     }
+
+
+
+
+
+// }
 
 
 // export const toDoAPI = async (token: string, url: string, data: any) => {
@@ -75,13 +106,13 @@ export class toDoAPI { // 객체
 // }
 
 
-export const listAPI = async (token: string, user: any, data: any) => {
-    const url = `/api/todo/${user.id}/list`
-    toDoAPI(token, url, data)  
+// export const listAPI = async (token: string, user: any, data: any) => {
+//     const url = `/api/todo/${user.id}/list`
+//     toDoAPI(token, url, data)  
 
 
 
-}  
+// }  
 
 
 
