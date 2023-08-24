@@ -5,35 +5,41 @@ type FormProps = {
     children: React.ReactElement<InputProps>[];
     onSubmit?: (e: FormEvent) => void;
     style? : React.CSSProperties;
+    noneborder?: boolean;
 }
 
 type InputProps = {
     placeholder? : string;
     onChange? : (value : string) => void; 
     isfirst? : boolean;
-    value? : string;
-    // addToDo? : (value : string) => void; 
-    addToDo? : () => void;
+    value?: string;
 }
 
-function Form({children, style} : FormProps){
+function Form({children, style, noneborder} : FormProps){
     return (
-        <FormWrapper style={style}>{children}</FormWrapper>
+        <> 
+            {
+                // noneborder ?
+                // <div className='테두리없는폼' style={style}>{children}</div>
+                // :
+                <FormWrapper style={style}>{children}</FormWrapper>
+            }
+        </>
     )
 }
 
-function Input({placeholder, onChange, addToDo } : InputProps){
+function Input({placeholder, onChange } : InputProps){
     const InputChangeHanlder = (e : React.ChangeEvent<HTMLInputElement>) => {  // 이벤트타입<이벤트를 활용할 HTML노드타입>
         const newValue = e.target.value;
 
         if(onChange) { // onChange 함수가 있으면 // onChange 함수 -> Input 컴포넌트를 사용하는 곳에서 onChange Props 에 담은 함수 // 예) setAccount(), setUserName() ....
-            onChange(newValue); // 외부에서 전달받은 onChange 함수를 호출하면서 입력값을 넘김
+            onChange(newValue); // 외부에서 전달받은 onChange 함수(예_ setAccount)를 호출하면서 입력값을 넘김 -> == setAccount(e.target.value)
         }
     }
 
     return (
         <div>
-            <StyledInput placeholder={placeholder} onChange={(e)=>{InputChangeHanlder(e)}} addToDo={()=>{addToDo     }}></StyledInput> 
+            <StyledInput placeholder={placeholder} onChange={(e)=>{InputChangeHanlder(e)}}></StyledInput> 
         </div>
     )
 }
@@ -43,8 +49,9 @@ export default Object.assign(Form, {Input}); // Form = Form + Input // Form 객�
 
 
 // 스타일컴포넌트 정의 - 컴포넌트 외부로 이동 : 해당 컴포넌트가 렌더링될 때마다 스타일 컴포넌트가 다시 생성되지 않도록 합니다.
-const FormWrapper = styled.form`
-border: 1px solid #c6c6c6;
+const FormWrapper = styled.form<{noneborder?:boolean}>`
+border: ${({noneborder}) => noneborder ? 'none' : '1px solid #c6c6c6'};
+// border: 1px solid #c6c6c6;
 width: 450px;
 // height: 500px;
 padding: 20px 30px;
@@ -52,7 +59,7 @@ border-radius: 10px;
 margin-bottom : 1rem;
 `;
 
-const StyledInput = styled.input<{isfirst?:boolean, addToDo?:()=>void}>`
+const StyledInput = styled.input<{isfirst?:boolean}>`
 width: 100%;
 box-sizing: border-box;
 padding: 14px 17px 13px;

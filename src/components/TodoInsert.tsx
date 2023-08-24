@@ -51,7 +51,7 @@ export default function ToDoInsert({addToDo} : {addToDo: (text: string) => void 
 
     return (
       <>
-        <Form onSubmit={ onSubmit } style={{flex: "1"}}>
+        <Form noneborder onSubmit={ onSubmit } style={{flex: "1"}}>
 					<Form.Input
             onChange={setValue}
             value={value}
