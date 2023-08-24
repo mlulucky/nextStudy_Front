@@ -1,38 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { create } from 'zustand'
 
-let todo = createSlice({
-    name: "todo",
-    initialState: [],
-    reducers: {
-        // 할일추가 / 할일체크 / 할일삭제 / 할일수정
+type ToDos = {
+    id: number;
+    content: string;
+    done: boolean;
+  }
 
+interface TodoStore {
+    todos: ToDos[];
+    setToDoList: (todo: any) => void;
+}
 
-    }
-})
+const todoStore = create<TodoStore>((set)=>({
+    todos: [], // todo 기본값 지정
+    setToDoList : (todos: any) => {
+        set((state) => ({...state, todos}))
+    },
 
+}));
 
-
-// import { create } from 'zustand'
-
-// export type ToDoListType = {
-//     todoList : ToDoType[]
-// }
-
-// export type ToDoType = {
-//     id: number;
-//     todo: string;
-//     done: boolean;
-// }
-
-// const todoStore = create((set)=>({
-//     todos: [],
-//     addToDo : 
-//     toggleToDo :
-//     removeToDo : 
-//     updateToDo : (text: string, id: number) => {
-//         set((state) => ({}))
-//     }
-    
-// }));
-
-// export default todoStore;
+export default todoStore;
