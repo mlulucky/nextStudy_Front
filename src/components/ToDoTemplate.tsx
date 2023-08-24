@@ -1,15 +1,11 @@
 import React, { useEffect } from "react";
-import { useState } from "react";
 import styled from "styled-components";
 import ToDoInsert from "./ToDoInsert";
 import ToDoList from "./ToDoList";
-import { useToDo } from "@/hooks/useToDo";
+import { useToDo } from "@/hooks/reducer/useToDo";
+import useToDoService from "@/hooks/useToDoService";
 import ToDoHead from "./ToDoHead";
-import { addToDoAPI } from "@/pages/api/todo";
-import userStore from "@/store/userStore";
-import axios from "axios";
-import { responsiveFontSizes } from "@mui/material";
-import { useCookies } from "react-cookie";
+import todoStore from "@/store/todoStore";
 
 const ToDoWrap = styled.div`
   border: 1px solid #c6c6c6;
@@ -23,51 +19,23 @@ const ToDoWrap = styled.div`
 
 export default function ToDoTemplate() {
   const {state, addToDo, toggleToDo, removeToDo, updateToDo} = useToDo();
-
-  const {user, setUser} = userStore();
-  const [cookies, setCookies] = useCookies();
-
-  type ToDos = {
-    id: number;
-    content: string;
-    done: boolean;
-  }
-
-  const [todoList, setTodoList] = useState<ToDos[]>([]); // 제네릭에 ToDos[] 타입을 지정 -> [] 빈배열도 ToDos[] 로 정의됨 // 👀 todoList 타입 제네릭 설정하기
-
-  // const getToDoList = async (token: string) => {
-  //   const requestToken = {
-  //     headers: {
-  //       Authorization: `Bearer ${token}` // 쿠키에서 토큰을 가져와서 헤더에 포함
-  //     }
-  //   }
-
-  //   await axios.get(`/api/todo/${user.id}/list`, requestToken)
-  //   .then((response) => {
-  //     setTodoList(response.data);
-  //   }).catch((error) => {
-  //     console.log("getToDo Error", error);
-  //   })
-
-  //   console.log("todoList",todoList);
-
-  // }
+  const {getToDos} = useToDoService();
+  const {todos} = todoStore();
 
   useEffect(()=>{
-    const token = cookies.token;
-    if(token) getToDoList(token);
-  },[]);
+    getToDos();
+  },[])
 
 
   return (
     <>
-      { todoList.map((todo, i)=>{
-        return (
-          <>
-            {todo.content}
-          </>
-        )
-      }) }
+      {
+        todos.map((todo,i)=> {
+          return (
+            <span key={i}>{todo.content}</span>
+          );
+        })
+      }
       <ToDoWrap>
         <ToDoHead state={state}/>      
         <ToDoInsert addToDo={addToDo}/>
