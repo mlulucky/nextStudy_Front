@@ -1,4 +1,5 @@
-import { getListAPI } from "@/pages/api/todo";
+import ToDoCreateRequestDTO from "@/dto/ToDoCreateRequestDTO";
+import { addAPI, getListAPI } from "@/pages/api/todo";
 import todoStore from "@/store/todoStore";
 import userStore from "@/store/userStore";
 import { useCookies } from "react-cookie";
@@ -20,10 +21,11 @@ export default function useToDoService() {
         setToDoList(todoList);
     }
 
+    // 할일 등록
+    const addToDoService = async (data: ToDoCreateRequestDTO) => {
+        return await addAPI(data, cookies.token, user.id);
+    }
 
-
-
-    
-    return { getToDos }
+    return { getToDos, addToDoService }
 
 }
