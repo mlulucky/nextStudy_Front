@@ -1,4 +1,4 @@
-import { ToDoItemType } from '@/hooks/useToDo';
+import { ToDoItemType } from '@/hooks/reducer/useToDo';
 import React from 'react';
 
 export default function ToDoHead({state} : {state : ToDoItemType}) {

@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import ToDoItem from './ToDoItem';
-import { ToDoItemType } from "@/hooks/useToDo";
+import { ToDoItemType } from "@/hooks/reducer/useToDo";
 
 const Ul = styled.ul`
   // border: 2px solid green;
