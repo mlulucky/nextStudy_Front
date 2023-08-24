@@ -1,23 +1,28 @@
-import React from 'react'
+import React, { FormEvent } from 'react'
 import styled from 'styled-components';
 
 type FormProps = {
     children: React.ReactElement<InputProps>[];
+    onSubmit?: (e: FormEvent) => void;
+    style? : React.CSSProperties;
 }
 
 type InputProps = {
-    placeholder : string;
+    placeholder? : string;
     onChange? : (value : string) => void; 
     isfirst? : boolean;
+    value? : string;
+    // addToDo? : (value : string) => void; 
+    addToDo? : () => void;
 }
 
-function Form({children} : FormProps){
+function Form({children, style} : FormProps){
     return (
-        <FormWrapper>{children}</FormWrapper>
+        <FormWrapper style={style}>{children}</FormWrapper>
     )
 }
 
-function Input({placeholder, onChange} : InputProps){
+function Input({placeholder, onChange, addToDo } : InputProps){
     const InputChangeHanlder = (e : React.ChangeEvent<HTMLInputElement>) => {  // 이벤트타입<이벤트를 활용할 HTML노드타입>
         const newValue = e.target.value;
 
@@ -28,7 +33,7 @@ function Input({placeholder, onChange} : InputProps){
 
     return (
         <div>
-            <StyledInput placeholder={placeholder} onChange={(e)=>{InputChangeHanlder(e)}}></StyledInput> 
+            <StyledInput placeholder={placeholder} onChange={(e)=>{InputChangeHanlder(e)}} addToDo={()=>{addToDo     }}></StyledInput> 
         </div>
     )
 }
@@ -41,13 +46,13 @@ export default Object.assign(Form, {Input}); // Form = Form + Input // Form 객�
 const FormWrapper = styled.form`
 border: 1px solid #c6c6c6;
 width: 450px;
-// height: 300px;
+// height: 500px;
 padding: 20px 30px;
 border-radius: 10px;
 margin-bottom : 1rem;
 `;
 
-const StyledInput = styled.input<{isfirst?:boolean}>`
+const StyledInput = styled.input<{isfirst?:boolean, addToDo?:()=>void}>`
 width: 100%;
 box-sizing: border-box;
 padding: 14px 17px 13px;
