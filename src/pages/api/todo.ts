@@ -33,15 +33,15 @@ export const getListAPI = async (token: string, userId: number) => {
 
 export const addAPI = async (data: ToDoCreateRequestDTO, token: string, userId: number) => {
     await httpRequest(token).post(`/${userId}/register`, data)
-    // .then((res)=>{
-    //     if(res.status === 200) {}
-    // })
+    .then((res)=>{
+        console.log("할일 등록 성공", res);
+    })
     .catch((error)=>{
-        console.error("등록실패, 다시 시도해주세요.", error); 
+        console.error("할일 등록실패, 다시 시도해주세요.", error); 
         null;
     });
 
-
+    // 여기서 then / catch 를 할지, hook 에 로직을 추가할지 고민
 }
 
 
