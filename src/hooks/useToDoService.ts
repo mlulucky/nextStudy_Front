@@ -21,9 +21,11 @@ export default function useToDoService() {
         setToDoList(todoList);
     }
 
-    // 할일 등록
+    // 할일 등록 🎄함수 정리좀 해야함.
     const addToDoService = async (data: ToDoCreateRequestDTO) => {
-        return await addAPI(data, cookies.token, user.id);
+        // setToDoList((prevTodos) => [...prevTodos, data]);
+        console.log("cookies token", cookies.token);
+        return await addAPI(data, cookies.token);
     }
 
     return { getToDos, addToDoService }
