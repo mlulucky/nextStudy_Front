@@ -15,35 +15,32 @@ type InputProps = {
     value?: string;
 }
 
-function Form({children, style, noneborder} : FormProps){
+function Form({children, onSubmit, style, noneborder} : FormProps){ // form 컴포넌트 재사용위해서, noneborder 속성추가 - border 없는경우
     return (
         <> 
-            {
-                // noneborder ?
-                // <div className='테두리없는폼' style={style}>{children}</div>
-                // :
-                <FormWrapper style={style}>{children}</FormWrapper>
+            {   // onSubmit?.(e) : onSubmit 이 정의되지 않았다면 undefined를 반환(에러를 방지) - 옵셔널 체이닝(객체의 존재 여부를 확인하고 안전하게 호출) // 비슷한 예로 userName = user?.name ?? "Default Name" 널리쉬콜리싱 (user 객체가 존재하고, 그 객체의 name 속성이 존재하는 경우:user.name의 값을 반환, user 객체가 존재하지만, 그 객체의 name 속성이 null 또는 undefined인 경우:"Default Name"을 반환, user 객체가 존재하지 않는 경우: "Default Name"을 반환 )                     
+                noneborder ?
+                <form onSubmit={(e)=>{ onSubmit?.(e); }} className='테두리없는폼' style={style}>{children}</form>
+                :
+                <FormWrapper className='테두리있는폼' style={style}>{children}</FormWrapper>
             }
         </>
     )
 }
 
-function Input({placeholder, onChange } : InputProps){
+function Input({placeholder, onChange} : InputProps){
     const InputChangeHanlder = (e : React.ChangeEvent<HTMLInputElement>) => {  // 이벤트타입<이벤트를 활용할 HTML노드타입>
         const newValue = e.target.value;
-
         if(onChange) { // onChange 함수가 있으면 // onChange 함수 -> Input 컴포넌트를 사용하는 곳에서 onChange Props 에 담은 함수 // 예) setAccount(), setUserName() ....
             onChange(newValue); // 외부에서 전달받은 onChange 함수(예_ setAccount)를 호출하면서 입력값을 넘김 -> == setAccount(e.target.value)
         }
     }
-
     return (
-        <div>
+        <>
             <StyledInput placeholder={placeholder} onChange={(e)=>{InputChangeHanlder(e)}}></StyledInput> 
-        </div>
+        </>
     )
 }
-
 
 export default Object.assign(Form, {Input}); // Form = Form + Input // Form 객체에 속성으로 Input 객체 추가({} 중괄호로 감싸야함)
 
