@@ -8,15 +8,17 @@ type ToDos = {
 
 interface TodoStore {
     todos: ToDos[];
-    setToDoList: (todo: any) => void;
+    setToDoList: (todos: ToDos[]) => void;
 }
 
 const todoStore = create<TodoStore>((set)=>({
     todos: [], // todo 기본값 지정
-    setToDoList : (todos: any) => {
+    setToDoList : (todos: ToDos[]) => {
         set((state) => ({...state, todos}))
     },
-
+    addToDoList : (todos: ToDos) => {
+        // set((state) => ([...state, {}]))
+    }
 }));
 
 export default todoStore;
