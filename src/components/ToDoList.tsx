@@ -1,38 +1,28 @@
 import React from "react";
 import { styled } from "styled-components";
-import ToDoItem from './ToDoItem';
-import { ToDoItemType } from "@/hooks/reducer/useToDo";
+import ToDoItem from "./ToDoItem";
+import todoStore from "@/store/todoStore";
 
 const Ul = styled.ul`
   // border: 2px solid green;
   overflow-y: auto;
   list-style: none;
   padding-left: 0 !important;
-  padding: 0 1rem; 
+  padding: 0 1rem;
   flex: 4;
 `;
 
-export type ToDoListProps = {
-  toggleToDo : (id:number)=> void;
-  removeToDo: (id:number)=>void;
-  updateToDo : (text:string, id:number)=>void;
-}
+export default React.memo(function ToDoList() {
+  const { todos } = todoStore();
 
-export default React.memo(
-  function ToDoList({ state, toggleToDo, removeToDo, updateToDo } : {state: ToDoItemType, toggleToDo: ToDoListProps['toggleToDo'], removeToDo: ToDoListProps['removeToDo'], updateToDo: ToDoListProps['updateToDo'] } ) {
-
-    if (state.todos.length === 0) return <p style={{flex: "4"}}>등록된 항목이 없습니다.</p>;
-  
-    console.log("todolist state", state);
-    return (
-      <Ul>
-        {
-        state.todos.map((todo, i) => {
-          return <ToDoItem todo={todo} key={i} toggleToDo={toggleToDo} removeToDo={removeToDo} updateToDo={updateToDo}/>;
-        })
-        }
-      </Ul>
-    );
-  }
-)
-
+  if (todos.length === 0) return <p style={{ flex: "4" }}>등록된 항목이 없습니다.</p>;   
+  return (
+    <Ul>
+      {todos.map((todo, i) => {
+        return (
+          <ToDoItem todoProp={todo}/>
+        );
+      })}
+    </Ul>
+  );
+});
