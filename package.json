@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --check ./src", 
+    "format:fix": "prettier --write ./src",
+    "prettier-format": "prettier --write prettierrc.json ./src/**/*.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -28,5 +31,8 @@
     "styled-components": "^6.0.5",
     "typescript": "5.1.6",
     "zustand": "^4.4.1"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.2"
   }
 }
