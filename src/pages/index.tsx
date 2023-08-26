@@ -1,36 +1,21 @@
-import userStore from '@/store/userStore'
-import { Login } from './login'
-import ToDoListPage from './todolist'
-import { NavWrapper } from '@/styles/PageWrapper'
-import useAuth from '@/hooks/useAuth'
+import userStore from "@/store/userStore";
+import { Login } from "./login";
+import ToDoListPage from "./todolist";
+import Nav from "@/components/Nav";
 
 export default function Home() {
   const { user } = userStore();
-  const { userLogout } = useAuth();
-
-  const logOutHandler = () => {
-    userLogout(); // 로그아웃 hook(loginAPI + 로그인로직)   
-  }
 
   return (
     <>
       {
-        user &&
-        (
-          <NavWrapper>
-            <div>
-              <span style={{fontWeight: 'bold'}}>{user.userName}</span>님
-            </div>
-            <span onClick={()=>{ logOutHandler();}} style={{color: '#aaa'}}>로그아웃</span>
-          </NavWrapper>
-        )
+        // 헤더는 로그인 후에 보여지도록 -> 유저가 있으면 헤더 보여주기
+        user && <Nav />
       }
-          
-      { // 자바스크립트에서 null (빈값) 은 false, 아니면 true
-        user ? (<ToDoListPage />) : (<Login />)
+      {
+        // 자바스크립트에서 값이 있으면 true, 아니면 false
+        user ? <ToDoListPage /> : <Login />
       }
     </>
-  )
-
+  );
 }
-
