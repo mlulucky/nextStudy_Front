@@ -2,11 +2,11 @@ import { useState } from "react";
 import styled from "styled-components";
 import iconImg from "@public/icon.png";
 
-const Input = styled.input`
+export const Input = styled.input`
   display: none;
 `;
 
-const Label = styled.label`
+export const Label = styled.label`
   padding-left: 20px;
   cursor: pointer;
   &:before {
@@ -25,7 +25,7 @@ const Label = styled.label`
   }
 `;
 
-const LoginKeepWrap = styled.div`
+export const LoginKeepWrap = styled.div`
   margin-top: 15px;
   text-align: left;
   position: relative;
@@ -42,7 +42,14 @@ export default function CheckBox() {
 
   return (
     <LoginKeepWrap>
-      <Input id="check" type="checkbox" checked={isChecked} onChange={()=>{ setIsChecked(!isChecked);}}/>         
+      <Input
+        id="check"
+        type="checkbox"
+        checked={isChecked}
+        onChange={() => {
+          setIsChecked(!isChecked);
+        }}
+      />
       <Label htmlFor="check">로그인상태 유지</Label>
     </LoginKeepWrap>
   );

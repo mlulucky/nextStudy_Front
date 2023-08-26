@@ -4,30 +4,36 @@ import todoStore from "@/store/todoStore";
 import userStore from "@/store/userStore";
 import { useCookies } from "react-cookie";
 
+export type UseToDoServiceType = {
+  getToDos: () => Promise<void>;
+  addToDoService: (data: ToDoCreateRequestDTO) => Promise<void>;
+};
 
-export default function useToDoService() {
-    const [cookies, setCookies] = useCookies();
-    const {user, setUser, removeUser} = userStore(); 
-    const {setToDoList} = todoStore();
+export default function useToDoService(): UseToDoServiceType {
+  const [cookies] = useCookies();
+  const { user } = userStore();
+  const { setToDoList, addToDoList } = todoStore();
 
-    // 리스트 불러오기 (api + 로직_상태저장)
-    const getToDos = async () => {
-       const todoList = await getListAPI(cookies.token, user.id);
-       console.log(todoList);
-       if(!todoList) {
-            alert('리스트 불러오기에 실패했습니다.');
-            return;
-        }        
-        setToDoList(todoList);
+  // 리스트 불러오기 (api + 로직_상태저장)
+  const getToDos = async () => {
+    const todoList = await getListAPI(cookies.token, user.id);
+    console.log(todoList);
+    if (!todoList) {
+      alert("리스트 불러오기에 실패했습니다.");
+      return;
     }
+    setToDoList(todoList); // todo - state 상태저장 -> 렌더링
+  };
 
-    // 할일 등록 🎄함수 정리좀 해야함.
-    const addToDoService = async (data: ToDoCreateRequestDTO) => {
-        // setToDoList((prevTodos) => [...prevTodos, data]);
-        console.log("cookies token", cookies.token);
-        return await addAPI(data, cookies.token);
+  const addToDoService = async (data: ToDoCreateRequestDTO) => {
+    const addedToDo = await addAPI(data, cookies.token); // id, content, done, message
+    if (!addedToDo) {
+      alert("할일 등록을 실패했습니다.");
+      return;
     }
+    addToDoList(addedToDo); // todo - state 상태저장 -> 렌더링 // 🔥 todo : id, content, done
+    alert("할일 등록을 성공했습니다.");
+  };
 
-    return { getToDos, addToDoService }
-
+  return { getToDos, addToDoService };
 }
