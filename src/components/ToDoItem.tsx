@@ -1,20 +1,26 @@
 import React, { FormEvent, useState } from "react";
 import { styled, css } from "styled-components";
 import { MdRemoveCircleOutline, MdEdit, MdDone, MdCheck, MdClose } from "react-icons/md";
-import todoStore, { ToDos } from "@/store/todoStore";
+import todoStore from "@/store/todoStore";
+import ToDoDTO from "@/dto/ToDoDTO";
+import useToDoService from "@/hooks/useToDoService";
 
 // 할 일
-export default function ToDoItem({ todoProp } : {todoProp: ToDos}) { // props 전달시, 객체 분해 할당 사용
+export default function ToDoItem({todoProp} : {todoProp: ToDoDTO}) { // props 전달시, 객체 분해 할당 사용
   const [ showEdit, setShowEdit ] = useState(false);
   const [ value, setValue ] = useState(todoProp.content);
+	const [todoValue, setTodoValue] = useState(todoProp);
   const { isDoneToDo, updateToDoList, removeToDoList } = todoStore();
+	const { modifyToDoService, changeDoneService } = useToDoService();
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (value.trim() == "") {
       alert("할 일을 입력해주세요.");
     } else {
-      updateToDoList(todoProp.id, value);
+			const updateTodoProp = {...todoValue, content: value}; // done 도 바꾸나 ?
+      modifyToDoService(updateTodoProp);
+			// setTodoValue(updateTodoProp); // ????
       setShowEdit(!showEdit);
     }
   };
@@ -30,12 +36,10 @@ export default function ToDoItem({ todoProp } : {todoProp: ToDos}) { // props �
 
   return (
     <List>
-      <Check done={todoProp.done} onClick={() => { isDoneToDo(todoProp.id); }}>
-        <MdDone />
-      </Check>
+      <Check $done={todoProp.done} onClick={async () => { await changeDoneService(todoValue);}}><MdDone /></Check>
       { !showEdit ? 
         ( <Div>
-            <ToDo done={todoProp.done} onClick={() => { isDoneToDo(todoProp.id); }}>{todoProp.content}</ToDo>
+            <ToDo $done={todoProp.done} onClick={() => { changeDoneService(todoValue); }}>{todoProp.content}</ToDo>
             <Edit onClick={onEdit}><MdEdit /></Edit>
             <Remove className="remove" onClick={onDelete}><MdRemoveCircleOutline /></Remove>
           </Div>
@@ -116,7 +120,7 @@ const Form = styled.form`
   ${commonWrapStyle}
 `;
 
-const Check = styled.span<{ done: boolean }>`
+const Check = styled.span<{ $done: boolean }>`
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -131,7 +135,7 @@ const Check = styled.span<{ done: boolean }>`
   position: relative;
   bottom: -2px;
   ${(props) =>
-    props.done &&
+    props.$done &&
     css`
       border: 1px solid #03c75a;
       background-color: #03c75a;
@@ -139,10 +143,10 @@ const Check = styled.span<{ done: boolean }>`
     `}
 `;
 
-const ToDo = styled.div<{ done: boolean }>`
+const ToDo = styled.div<{ $done: boolean }>`
   ${commonStlye};
   ${(props) =>
-    props.done &&
+    props.$done &&
     css`
       text-decoration: line-through;
       color: gray;
