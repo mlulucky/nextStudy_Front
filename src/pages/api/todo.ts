@@ -1,4 +1,5 @@
 import ToDoCreateRequestDTO from "@/dto/ToDoCreateRequestDTO";
+import ToDoDTO from "@/dto/ToDoDTO";
 import axios, { AxiosInstance } from "axios";
 
 type requestTokenType = {
@@ -29,12 +30,17 @@ export const getListAPI = async (token: string, userId: number) => { // await - 
 	return listResponse.data;
 }
 
-export const addAPI = async (data: ToDoCreateRequestDTO, token: string) => {
+export const addAPI = async (token: string, data: ToDoCreateRequestDTO) => {
 	const addResponse = await httpRequest(token).post(`/register`, data).catch((error)=>{console.error(error); null}); // request 요청 실패시 -> catch 문 실행, addResponse 에 null 할당
 	if(!addResponse) {alert("응답데이터가 없습니다."); return null;} // addResponse 가 null 인지 체크 
 	return addResponse.data;
 }
 
+export const modifyAPI = async (token: string, data: ToDoDTO) => {
+	const modifyResponse = await httpRequest(token).patch(`/modify`, data).catch((error)=> {console.error(error), null});
+	if(!modifyResponse) {alert("응답데이터가 없습니다."); return null;}
+	return modifyResponse.data; // {id: content: done: }
+}
 
 
 
