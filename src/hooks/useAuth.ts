@@ -14,7 +14,8 @@ export type UseAuthType = {
 export default function useAuth(): UseAuthType {
   const [cookies, setCookies] = useCookies();
   const { setUser, removeUser } = userStore(); // userStore 안에 있는 setUser 와 동일한 속성명의 속성을 대입한다. - 객체 구조분해할당
-
+   
+  
   // 회원가입
   const userJoin = async (data: UserJoinRequestDTO) => {
     const joinResponse = await joinAPI(data);
@@ -42,19 +43,26 @@ export default function useAuth(): UseAuthType {
       }
 
       // 로그인 성공시 - 응답 데이터에서 토큰, 만료시간 가져옴
-      const { token, experTime, user } = loginResponse.data; // 객체 구조분해할당
+      const { token, refreshToken, experTime, user } = loginResponse.data;
       const expires = new Date();
       expires.setMilliseconds(expires.getMilliseconds() + experTime); // 현재 날짜시간(new Date) + experTime 시간
-      setCookies("token", token, { expires }); // { expires } 객체로 감싸는 이유 : key - value // 옵션을 추가하거나 변경할 때 간편하게 확장할 수 있다.
+      setCookies("token", token, { expires }); 
+      // setCookies("refreshToken", refreshToken, { expires }) // accesstoken 재발급 위한 토큰, 로그인유지
       setUser(user);
     } catch (error) {
       console.error("로그인 실패: ", error);
     }
   };
 
+  // 로그인유지
+  const keepLogin = () => {
+    const refreshToken = cookies.get('refreshToken');
+  }
+
   // 로그아웃
   const userLogout = () => {
     setCookies("token", "", { expires: new Date() }); // 쿠키삭제 // 토큰 '' 빈값으로 처리 , 만료시간은 현재시간으로 설정
+    // setCookies("refreshToken", "", { expires: new Date() });
     removeUser(); // 유저 null
   };
 
