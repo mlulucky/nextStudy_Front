@@ -18,12 +18,19 @@ export default function ToDoItem({todoProp} : {todoProp: ToDoDTO}) { // props �
     if (value.trim() == "") {
       alert("할 일을 입력해주세요.");
     } else {
-			const updateTodoProp = {...todoValue, content: value}; // done 도 바꾸나 ?
+			const updateTodoProp = {...todoValue, content: value}; 
+			setTodoValue(updateTodoProp); 
       modifyToDoService(updateTodoProp);
-			// setTodoValue(updateTodoProp); // ????
       setShowEdit(!showEdit);
     }
   };
+
+  const changeDone = () => {
+    const updateTodoProp ={...todoValue, done: !todoValue.done};
+    setTodoValue(updateTodoProp);
+    changeDoneService(updateTodoProp);
+
+  }
 
   const onEdit = () => {
     setValue(todoProp.content);
@@ -34,12 +41,13 @@ export default function ToDoItem({todoProp} : {todoProp: ToDoDTO}) { // props �
     removeToDoList(todoProp.id);
   };
 
+
   return (
     <List>
-      <Check $done={todoProp.done} onClick={async () => { await changeDoneService(todoValue);}}><MdDone /></Check>
+      <Check $done={todoValue.done} onClick={() => {changeDone();}}><MdDone /></Check>
       { !showEdit ? 
         ( <Div>
-            <ToDo $done={todoProp.done} onClick={() => { changeDoneService(todoValue); }}>{todoProp.content}</ToDo>
+            <ToDo $done={todoValue.done} onClick={() => {changeDone();}}>{todoProp.content}</ToDo>
             <Edit onClick={onEdit}><MdEdit /></Edit>
             <Remove className="remove" onClick={onDelete}><MdRemoveCircleOutline /></Remove>
           </Div>

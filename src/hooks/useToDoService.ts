@@ -34,7 +34,7 @@ export default function useToDoService(): UseToDoServiceType {
       alert("할일 등록을 실패했습니다.");
       return;
     }
-    addToDoList(addedToDo); // todo - state 상태저장 -> 렌더링 // 🔥 todo : id, content, done
+    addToDoList(addedToDo); // todo - state 상태저장 -> 렌더링 
     alert("할일 등록을 성공했습니다.");
   };
 
@@ -44,7 +44,7 @@ export default function useToDoService(): UseToDoServiceType {
 			alert("할일 수정을 실패했습니다.");
 			return;
 		}
-		console.log("modifiedToDo", modifiedToDo); // {id: content: done: }
+		console.log("modifiedToDo", modifiedToDo); 
 		updateToDoList(data.id, data.content);
 	}
 
@@ -54,8 +54,8 @@ export default function useToDoService(): UseToDoServiceType {
 			alert("할일 수정을 실패했습니다.");
 			return;
 		}
-		isDoneToDo(data.id);
-		console.log("changeDoneService", data); // {id: content: done: }
+		console.log("changeDoneService", data);
+    updateToDoList(data.id, data.content);
 	}
 
 
