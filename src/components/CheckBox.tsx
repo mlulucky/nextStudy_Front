@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import iconImg from "@public/icon.png";
+import useAuth from "@/hooks/useAuth";
 
 export const Input = styled.input`
   display: none;
@@ -39,6 +40,7 @@ export const LoginKeepWrap = styled.div`
 
 export default function CheckBox() {
   let [isChecked, setIsChecked] = useState(false);
+  const { keepLogin } = useAuth();
 
   return (
     <LoginKeepWrap>
@@ -48,6 +50,7 @@ export default function CheckBox() {
         checked={isChecked}
         onChange={() => {
           setIsChecked(!isChecked);
+          keepLogin();
         }}
       />
       <Label htmlFor="check">로그인상태 유지</Label>

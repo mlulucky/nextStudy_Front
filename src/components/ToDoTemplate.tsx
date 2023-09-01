@@ -5,7 +5,6 @@ import ToDoList from "./ToDoList";
 import { useToDo } from "@/hooks/reducer/useToDo";
 import useToDoService from "@/hooks/useToDoService";
 import ToDoHead from "./ToDoHead";
-
 const ToDoWrap = styled.div`
   border: 1px solid #c6c6c6;
   width: 450px;
@@ -17,7 +16,7 @@ const ToDoWrap = styled.div`
 `;
 
 export default function ToDoTemplate() {
-  const { state, toggleToDo, removeToDo, updateToDo } = useToDo();
+  const { state } = useToDo();
   const { getToDos } = useToDoService();
 
   useEffect(() => {
