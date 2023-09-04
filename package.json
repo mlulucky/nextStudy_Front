@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --check ./src", 
+    "format": "prettier --check ./src",
     "format:fix": "prettier --write ./src",
     "prettier-format": "prettier --write prettierrc.json ./src/**/*.ts"
   },
@@ -28,6 +28,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
     "react-redux": "^8.1.2",
+    "react-spinners": "^0.13.8",
     "styled-components": "^6.0.5",
     "typescript": "5.1.6",
     "zustand": "^4.4.1"

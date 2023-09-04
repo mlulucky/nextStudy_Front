@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false, // console.log 2번 찍힘 반대
   compiler: {
     styledComponents: true,
   },

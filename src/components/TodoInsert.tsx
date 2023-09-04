@@ -3,15 +3,17 @@ import Form from "./Form";
 import useToDoService from "@/hooks/useToDoService";
 import userStore from "@/store/userStore";
 import ToDoCreateRequestDTO from "@/dto/ToDoCreateRequestDTO";
+import { useCookies } from "react-cookie";
 
 // 할 일 등록 컴포넌트
 export default function ToDoInsert() {
   const [value, setValue] = useState("");
   const { addToDoService } = useToDoService();
   const { user } = userStore();
+	const [cookies, setCookies] = useCookies();
 
-  const data: ToDoCreateRequestDTO = {
-    userId: user.id,
+	const data: ToDoCreateRequestDTO = {
+    userId: cookies.id,
     content: value, // 입력한 값
     done: false, // 기본 값
   };

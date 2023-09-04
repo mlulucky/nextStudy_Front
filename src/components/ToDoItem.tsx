@@ -1,46 +1,61 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { styled, css } from "styled-components";
 import { MdRemoveCircleOutline, MdEdit, MdDone, MdCheck, MdClose } from "react-icons/md";
-import todoStore, { ToDos } from "@/store/todoStore";
+import ToDoDTO from "@/dto/ToDoDTO";
+import useToDoService from "@/hooks/useToDoService";
+
 
 // 할 일
-export default function ToDoItem({ todoProp } : {todoProp: ToDos}) { // props 전달시, 객체 분해 할당 사용
+export default function ToDoItem({todoProp} : {todoProp: ToDoDTO}) { // props 전달시, 객체 분해 할당 사용
   const [ showEdit, setShowEdit ] = useState(false);
   const [ value, setValue ] = useState(todoProp.content);
-  const { isDoneToDo, updateToDoList, removeToDoList } = todoStore();
+	const [todoValue, setTodoValue] = useState(todoProp);
+	const { modifyToDoService, deleteToDoService } = useToDoService();
 
-  const onSubmit = (e: FormEvent) => {
+	const updateHandler = async (updatedData: Partial<ToDoDTO>) => {
+		const updateTodoProp = {...todoValue, ...updatedData}; 
+		await modifyToDoService(updateTodoProp);
+		setTodoValue(updateTodoProp);
+	}
+	
+  const onModifySubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (value.trim() == "") {
       alert("할 일을 입력해주세요.");
     } else {
-      updateToDoList(todoProp.id, value);
-      setShowEdit(!showEdit);
+			await updateHandler({content: value});
+			setShowEdit(!showEdit);
     }
   };
 
-  const onEdit = () => {
+  const changeDone = async () => {
+		await updateHandler({done: !todoValue.done});
+  }
+
+  const onEdit = async () => {
     setValue(todoProp.content);
-    setShowEdit(!showEdit);
+		await updateHandler({content: value});
+		setShowEdit(!showEdit);
   };
 
-  const onDelete = () => {
-    removeToDoList(todoProp.id);
-  };
+  const onDelete = async () => {
+		if(todoValue) {
+			await deleteToDoService(todoValue);
+		}
+	};
+
 
   return (
     <List>
-      <Check done={todoProp.done} onClick={() => { isDoneToDo(todoProp.id); }}>
-        <MdDone />
-      </Check>
+      <Check $done={todoValue.done} onClick={() => {changeDone();}}><MdDone /></Check>
       { !showEdit ? 
         ( <Div>
-            <ToDo done={todoProp.done} onClick={() => { isDoneToDo(todoProp.id); }}>{todoProp.content}</ToDo>
+            <ToDo $done={todoValue.done} onClick={() => {changeDone();}}>{todoProp.content}</ToDo>
             <Edit onClick={onEdit}><MdEdit /></Edit>
             <Remove className="remove" onClick={onDelete}><MdRemoveCircleOutline /></Remove>
           </Div>
         ) : 
-        ( <Form onSubmit={onSubmit}>
+        ( <Form onSubmit={onModifySubmit}>
             <ToDoInput value={value} onChange={(e) => { setValue(e.target.value); }}/>
             <Register type="submit"><MdCheck /></Register>
             <Cancle onClick={(e) => { e.preventDefault(); setShowEdit(!showEdit); }}><MdClose /></Cancle>
@@ -76,6 +91,7 @@ const commonWrapStyle = css`
   display: flex;
   align-items: center;
 `;
+
 const Remove = styled.span`
   color: #dee2e6;
   font-size: 24px;
@@ -116,7 +132,7 @@ const Form = styled.form`
   ${commonWrapStyle}
 `;
 
-const Check = styled.span<{ done: boolean }>`
+const Check = styled.span<{ $done: boolean }>`
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -131,7 +147,7 @@ const Check = styled.span<{ done: boolean }>`
   position: relative;
   bottom: -2px;
   ${(props) =>
-    props.done &&
+    props.$done &&
     css`
       border: 1px solid #03c75a;
       background-color: #03c75a;
@@ -139,10 +155,10 @@ const Check = styled.span<{ done: boolean }>`
     `}
 `;
 
-const ToDo = styled.div<{ done: boolean }>`
+const ToDo = styled.div<{ $done: boolean }>`
   ${commonStlye};
   ${(props) =>
-    props.done &&
+    props.$done &&
     css`
       text-decoration: line-through;
       color: gray;

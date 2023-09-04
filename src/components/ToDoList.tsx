@@ -20,7 +20,7 @@ export default React.memo(function ToDoList() {
     <Ul>
       {todos.map((todo, i) => {
         return (
-          <ToDoItem todoProp={todo}/>
+          <ToDoItem key={i} todoProp={todo}/>
         );
       })}
     </Ul>
