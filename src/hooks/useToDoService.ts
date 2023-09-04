@@ -15,7 +15,7 @@ export type UseToDoServiceType = {
 export default function useToDoService(): UseToDoServiceType {
   const [cookies] = useCookies();
   const { user } = userStore();
-  const { setToDoList, addToDoList, updateToDoList, isDoneToDo, removeToDoList } = todoStore();
+  const { todos, setToDoList, addToDoList, updateToDoList, isDoneToDo, removeToDoList } = todoStore();
 
   // 리스트 불러오기 (api + 로직_상태저장)
   const getToDos = async () => {
@@ -36,7 +36,9 @@ export default function useToDoService(): UseToDoServiceType {
       alert("할일 등록을 실패했습니다.");
       return;
     }
-    addToDoList(addedToDo); 
+    
+    addToDoList(addedToDo);
+    console.log(todos);
     alert("할일 등록을 성공했습니다.");
   };
 

@@ -1,7 +1,6 @@
 import React, { FormEvent, useState } from "react";
 import Form from "./Form";
 import useToDoService from "@/hooks/useToDoService";
-import userStore from "@/store/userStore";
 import ToDoCreateRequestDTO from "@/dto/ToDoCreateRequestDTO";
 import { useCookies } from "react-cookie";
 
@@ -9,7 +8,6 @@ import { useCookies } from "react-cookie";
 export default function ToDoInsert() {
   const [value, setValue] = useState("");
   const { addToDoService } = useToDoService();
-  const { user } = userStore();
 	const [cookies, setCookies] = useCookies();
 
 	const data: ToDoCreateRequestDTO = {
@@ -18,13 +16,12 @@ export default function ToDoInsert() {
     done: false, // 기본 값
   };
 
-  const 할일등록 = (e: FormEvent) => {
+  const 할일등록 = async (e: FormEvent) => {
     e.preventDefault();
-
     if (value.trim() == "") {
       alert("할 일을 입력해주세요.");
     } else {
-      addToDoService(data); // useToDoService 에서 addToDoList 로 todo 추가(todo 상태를 변경(todo 상태 store 에서 관리(전역 동기화)) -> 렌더링 화면반영됨
+      await addToDoService(data); // useToDoService 에서 addToDoList 로 todo 추가(todo 상태를 변경(todo 상태 store 에서 관리(전역 동기화)) -> 렌더링 화면반영됨
       setValue(""); // 입력값 초기화
     }
   };
