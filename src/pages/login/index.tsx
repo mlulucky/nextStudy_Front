@@ -7,14 +7,7 @@ import useAuth from "@/hooks/useAuth";
 import userStore from "@/store/userStore";
 import Loading from "@/components/Loading";
 import { useCookies } from "react-cookie";
-
-const Text = styled.span`
-	color: #777;
-	cursor: pointer;
-	&:hover {
-		color: #03c75a;
-	}
-`
+import Text from "@/styles/JoinText";
 
 export default function Login(){ 
 	const router = useRouter();
