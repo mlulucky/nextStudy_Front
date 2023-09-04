@@ -80,6 +80,9 @@ const FormWrapper = styled.form<{ noneborder?: boolean }>`
   padding: 20px 30px;
   border-radius: 10px;
   margin-bottom: 1rem;
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const StyledInput = styled.input<{ isfirst?: boolean }>`
