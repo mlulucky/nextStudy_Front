@@ -1,6 +1,7 @@
 import UserJoinRequestDTO from '@/dto/UserJoinRequestDTO';
 import UserLoginRequestDTO from '@/dto/UserLoginRequestDTO';
 import axios from 'axios'
+import { userHttpRequest } from './axiosWithToken';
 
 // 공통함수로 axios 요청 보내기
 const authRequest = async (url:string, data: any) => {
@@ -11,14 +12,24 @@ const authRequest = async (url:string, data: any) => {
 	return response.data;
 }
 
-
-export const loginAPI = (data: UserLoginRequestDTO) => {
+export const loginAPI = async (data: UserLoginRequestDTO) => {
 	const url = '/api/user/login';
-	return authRequest(url, data);
+	return await authRequest(url, data);
 }
-
 
 export const joinAPI = async (data: UserJoinRequestDTO) => {
 	const url = '/api/user/join';
-	return authRequest(url, data);
+	return await authRequest(url, data);
+}
+
+// 토큰을 이용한 회원정보 요청
+export const userInfoAPI = async (token: string) => {	
+	try{
+		const userInfoResponse = await userHttpRequest(token).get(`/detail`);
+		return userInfoResponse.data;
+	}catch(error) {
+		console.log("응답데이터가 없습니다.");
+		console.error(error);
+		return null;
+	}
 }
