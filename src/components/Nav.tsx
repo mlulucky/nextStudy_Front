@@ -13,17 +13,17 @@ const NavWrapper = styled.div`
 export default function Nav() {
   const { user } = userStore();
   const { userLogout } = useAuth();
-
   const logOutHandler = () => {
     userLogout(); // 로그아웃 hook(loginAPI + 로그인로직)
   };
 
+	// Nav 와 todolist/index.tsx 컴포넌트가 합쳐져있어서 todolist index 페이지에서 useEffect 로 유저체크를 한 후 user 의 정보를 Nav 컴포넌트에 입력
   return (
     <NavWrapper>
       <div>
-        <span style={{ fontWeight: "bold" }}>{user.userName}</span>님
+      	<span style={{ fontWeight: "bold" }}>{user.userName}</span>님
       </div>
-      <span onClick={() => {logOutHandler();}} style={{ color: "#aaa" }}>로그아웃</span>
+      <span style={{ color: "#aaa", cursor: "pointer" }} onClick={() => {logOutHandler();}}>로그아웃</span>
     </NavWrapper>
   );
 }
