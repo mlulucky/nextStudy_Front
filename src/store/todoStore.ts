@@ -7,7 +7,7 @@ interface TodoStore {
   setToDoList: (todos: ToDoDTO[]) => void;
   addToDoList: (todo: ToDoDTO) => void;
   isDoneToDo: (id: number) => void;
-  updateToDoList: (id: number, content: string) => void;
+  updateToDoList: (data: ToDoDTO) => void;
   removeToDoList: (id: number) => void;
 }
 
@@ -23,11 +23,11 @@ const todoStore = create<TodoStore>((set) => ({
   isDoneToDo: (id: number) => {
     set((state) => ({ ...state, todos: state.todos.map(todo => (todo.id === id ? {...todo, done: !todo.done} : todo))})); // { } 중괄호 : return 값을 명시해야함. () 소괄호 : return 명시 안해도 됨. 단일한 표현식 값을 자동으로 반환
   },
-  updateToDoList: (id: number, content: string) => {
-    set((state)=>({ ...state, todos: state.todos.map(todo =>(todo.id == id? {...todo, content: content} : todo))}));
+  updateToDoList: (data: ToDoDTO) => {
+    set((state)=>({ ...state, todos: state.todos.map(todo =>(todo.id == data.id? {...todo, content: data.content, done: data.done} : todo))}));
   },
   removeToDoList: (id: number) => {
-    set((state)=>({ ...state, todos: state.todos.filter(todo => { todo.id !== id })}))
+    set((state)=>({ ...state, todos: state.todos.filter(todo => todo.id !== id )}))
   }
 }));
 
