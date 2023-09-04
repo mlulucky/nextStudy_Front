@@ -14,6 +14,7 @@ type InputProps = {
   onChange?: (value: string) => void;
   isfirst?: boolean;
   value?: string;
+	type? : string;
 };
 
 function Form({ children, onSubmit, style, noneborder }: FormProps) {
@@ -42,7 +43,7 @@ function Form({ children, onSubmit, style, noneborder }: FormProps) {
   );
 }
 
-function Input({ style, placeholder, onChange, value }: InputProps) {
+function Input({ type, style, placeholder, onChange, value }: InputProps) {
   const InputChangeHanlder = (e: React.ChangeEvent<HTMLInputElement>) => {
     // 이벤트타입<이벤트를 활용할 HTML노드타입>
     const newValue = e.target.value;
@@ -54,6 +55,7 @@ function Input({ style, placeholder, onChange, value }: InputProps) {
   return (
     <>
       <StyledInput
+				type={type}
         style={style}
         placeholder={placeholder}
         onChange={(e) => {
