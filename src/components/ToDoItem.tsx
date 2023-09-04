@@ -1,45 +1,48 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { styled, css } from "styled-components";
 import { MdRemoveCircleOutline, MdEdit, MdDone, MdCheck, MdClose } from "react-icons/md";
-import todoStore from "@/store/todoStore";
 import ToDoDTO from "@/dto/ToDoDTO";
 import useToDoService from "@/hooks/useToDoService";
+
 
 // 할 일
 export default function ToDoItem({todoProp} : {todoProp: ToDoDTO}) { // props 전달시, 객체 분해 할당 사용
   const [ showEdit, setShowEdit ] = useState(false);
   const [ value, setValue ] = useState(todoProp.content);
 	const [todoValue, setTodoValue] = useState(todoProp);
-  const { isDoneToDo, updateToDoList, removeToDoList } = todoStore();
-	const { modifyToDoService, changeDoneService } = useToDoService();
+	const { modifyToDoService, deleteToDoService } = useToDoService();
 
-  const onSubmit = (e: FormEvent) => {
+	const updateHandler = async (updatedData: Partial<ToDoDTO>) => {
+		const updateTodoProp = {...todoValue, ...updatedData}; 
+		await modifyToDoService(updateTodoProp);
+		setTodoValue(updateTodoProp);
+	}
+	
+  const onModifySubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (value.trim() == "") {
       alert("할 일을 입력해주세요.");
     } else {
-			const updateTodoProp = {...todoValue, content: value}; 
-			setTodoValue(updateTodoProp); 
-      modifyToDoService(updateTodoProp);
-      setShowEdit(!showEdit);
+			await updateHandler({content: value});
+			setShowEdit(!showEdit);
     }
   };
 
-  const changeDone = () => {
-    const updateTodoProp ={...todoValue, done: !todoValue.done};
-    setTodoValue(updateTodoProp);
-    changeDoneService(updateTodoProp);
-
+  const changeDone = async () => {
+		await updateHandler({done: !todoValue.done});
   }
 
-  const onEdit = () => {
+  const onEdit = async () => {
     setValue(todoProp.content);
-    setShowEdit(!showEdit);
+		await updateHandler({content: value});
+		setShowEdit(!showEdit);
   };
 
-  const onDelete = () => {
-    removeToDoList(todoProp.id);
-  };
+  const onDelete = async () => {
+		if(todoValue) {
+			await deleteToDoService(todoValue);
+		}
+	};
 
 
   return (
@@ -52,7 +55,7 @@ export default function ToDoItem({todoProp} : {todoProp: ToDoDTO}) { // props �
             <Remove className="remove" onClick={onDelete}><MdRemoveCircleOutline /></Remove>
           </Div>
         ) : 
-        ( <Form onSubmit={onSubmit}>
+        ( <Form onSubmit={onModifySubmit}>
             <ToDoInput value={value} onChange={(e) => { setValue(e.target.value); }}/>
             <Register type="submit"><MdCheck /></Register>
             <Cancle onClick={(e) => { e.preventDefault(); setShowEdit(!showEdit); }}><MdClose /></Cancle>
@@ -88,6 +91,7 @@ const commonWrapStyle = css`
   display: flex;
   align-items: center;
 `;
+
 const Remove = styled.span`
   color: #dee2e6;
   font-size: 24px;
