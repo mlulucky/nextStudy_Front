@@ -38,20 +38,14 @@ export const LoginKeepWrap = styled.div`
   }
 `;
 
-export default function CheckBox() {
-  let [isChecked, setIsChecked] = useState(false);
-  const { keepLogin } = useAuth();
-
+export default function CheckBox({isChecked, handlerCheckBoxChange}:{isChecked:boolean, handlerCheckBoxChange: ()=>void;}) {
   return (
     <LoginKeepWrap>
       <Input
         id="check"
         type="checkbox"
         checked={isChecked}
-        onChange={() => {
-          setIsChecked(!isChecked);
-          keepLogin();
-        }}
+        onChange={handlerCheckBoxChange}
       />
       <Label htmlFor="check">로그인상태 유지</Label>
     </LoginKeepWrap>

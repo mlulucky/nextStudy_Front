@@ -1,20 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Button from "./Button";
 import Form from "./Form";
 import useAuth from "@/hooks/useAuth";
 import CheckBox from "./CheckBox";
-import { useCookies } from "react-cookie";
-import { loginAPI } from "@/pages/api/auth";
-import tokenStore from "@/store/tokenStore";
-import { error } from "console";
 import { useRouter } from "next/router";
-import Loading from "./Loading";
 
 export default function LoginForm() {
   const [account, setAccount] = useState<string>(""); // useState 안에있는 배열의 요소 순서대로 account, setAccount 변수에 대입
   const [password, setPassword] = useState<string>("");
   const { userLogin } = useAuth(); // 함수에 반환값 타입을 설정했으므로 타입스크립트가 반환된 타입으로 타입추론예정(제네릭x)
-  const [cookies, setCookies] = useCookies();
+  let [isChecked, setIsChecked] = useState(false);
+
+  const handlerCheckBoxChange = () => {
+    setIsChecked(!isChecked);
+  }
 
 	const router = useRouter();
 	const data = {
@@ -24,7 +23,7 @@ export default function LoginForm() {
 
   const loginHandler = async (e: React.MouseEvent<HTMLButtonElement>) => { // e : 여기서는 onClick 클릭이벤트 타입
     e.preventDefault(); // 페이지 새로고침 방지
-		userLogin(data); // 로그인 hook(loginAPI + 로그인로직)
+		userLogin({data, isChecked}); // 로그인 hook(loginAPI + 로그인로직)
 	};
 
   return (
@@ -34,7 +33,7 @@ export default function LoginForm() {
         <Form.Input isfirst placeholder="아이디" onChange={setAccount} />
         <Form.Input type="password" placeholder="비밀번호" onChange={setPassword} />
       </div>
-      <CheckBox />
+      <CheckBox isChecked={isChecked} handlerCheckBoxChange={handlerCheckBoxChange}/>
       <Button onClick={loginHandler}>로그인</Button>
     </Form>
   );
