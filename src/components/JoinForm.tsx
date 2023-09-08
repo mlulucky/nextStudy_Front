@@ -9,6 +9,8 @@ export default function JoinForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordCheck, setPasswordCheck] = useState<string>("");
+  const [error, setError] = useState(null); // 에러메시지 상태
+
 	console.log("렌더링");
   const { userJoin } = useAuth();
   const data = {
@@ -20,7 +22,14 @@ export default function JoinForm() {
   };
   const joinHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    userJoin(data); // 회원가입 hook(joinAPI + 회원가입로직)
+    try {
+      await userJoin(data); // 회원가입 hook(joinAPI + 회원가입로직)
+    } 
+    catch(error:any) {
+      console.log("error", error);
+      //setError(error.response.data.message);  
+      console.log("error.response.data.message", error.response.data.message);
+    }
   };
 
   return (
@@ -31,6 +40,7 @@ export default function JoinForm() {
       <Form.Input placeholder="이메일" onChange={setEmail} />
       <Form.Input placeholder="비밀번호" onChange={setPassword} type="password"/>
       <Form.Input placeholder="비밀번호확인" onChange={setPasswordCheck} type="password"/>
+      <div>{error}</div>
       <Button onClick={joinHandler}>가입하기</Button>
     </Form>
   );

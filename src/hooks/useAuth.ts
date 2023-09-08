@@ -51,13 +51,19 @@ export default function useAuth(): UseAuthType {
       return;
     }
 
-    const joinResponse = await joinAPI(data);
+    let joinResponse=null;
+    try {
+      joinResponse = await joinAPI(data)
+    } catch(error:any){
+      console.log("useAuth", error);
+    }
     if (!joinResponse || !joinResponse.result) {
-      alert(joinResponse.message);
+      // console.log("joinResponse.message", joinResponse.message);
+      // alert(joinResponse.message);
       return;
     }
 
-    console.log("joinResponse", joinResponse);
+    console.log("joinResponse.message", joinResponse.message);
     alert(joinResponse.message);
     router.push("/login");
   };

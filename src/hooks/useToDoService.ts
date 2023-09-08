@@ -3,6 +3,7 @@ import ToDoDTO from "@/dto/ToDoDTO";
 import { addAPI, deleteAPI, getListAPI, modifyAPI} from "@/pages/api/todo";
 import todoStore from "@/store/todoStore";
 import userStore from "@/store/userStore";
+import { useEffect } from "react";
 import { useCookies } from "react-cookie";
 
 export type UseToDoServiceType = {
@@ -38,6 +39,7 @@ export default function useToDoService(): UseToDoServiceType {
     }
     
     addToDoList(addedToDo);
+
     console.log(todos);
     alert("할일 등록을 성공했습니다.");
   };
